@@ -126,11 +126,47 @@ function showDetails(items) {
         <p><strong>Carbon Output:</strong> ${item.carbonOutput} kg CO2e</p>
         <hr />
       `;
+      const addButton = document.createElement('div');
+      addButton.innerHTML = 'Add';
+      addButton.setAttribute("type", "button");
+      addButton.setAttribute("class","addButtons");
+      addButton.setAttribute('id', 'addButton' + item.food + '.' + item.country);
+      // console.log(addButton.getAttribute("id"));
+      //addElementToList(addButton.getAttribute('id'));
+      resultContainer.appendChild(addButton);
       resultContainer.appendChild(detailDiv);
     });
   }
 
   resultContainer.style.display = 'block';
+}
+
+
+
+function addElementToList(id) {
+  const food = id.substring(9);
+  i = food.indexOf('.');
+  let foodName = food.substring(0, i);
+  let foodCountry = food.substring(i+1);
+
+  const foodItemDiv = document.createElement('div'); 
+  foodItemDiv.setAttribute("class", "addedFoodItemDiv");
+  foodItemDiv.setAttribute("id","foodItemDiv"); 
+  foodItemDiv.innerHTML = getFoodItemFromData(foodName,foodCountry); //TOD
+
+  const ListDiv = document.getElementById('addedListDiv');
+
+  ListDiv.appendChild(foodItemDiv); 
+  
+  // console.log(foodName);
+  // console.log(foodCountry); 
+
+  //const addElementButton = document.getElementById
+  //inp.addEventListener('')
+}
+
+function getFoodItemFromData(name, country) {
+  null; 
 }
 
 /* Resultatboxen försvinner när man raderar all text från sökfältet */
