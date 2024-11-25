@@ -9,11 +9,11 @@ body {
 /* Loggans position */
 h2 {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 70px;
   margin-bottom: 20px;
 }
 
-/* Autocomplete-funktionen */
+/* Search bar */
 .autocomplete {
   display: flex;
   justify-content: center;
@@ -23,8 +23,21 @@ h2 {
   position: relative;
 }
 
+/* Resultat boxen med livsmedelsinformation */
+.result-container {
+  width: 100%;        
+  max-width: 500px; 
+  margin: 0 auto;       
+  padding: 10px;        
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  max-height: 500px;
+  overflow-y: auto;
+  display: none;
+}
 
-/* Sökfältets utseende */
+/* aktiv search bar - när användaren söker på något */
 input[type="search"] {
   width: 100%; 
   max-width: 500px; 
@@ -103,23 +116,6 @@ input[type="search"].active {
   color: #ffffff;
 }
 */
-
-/* Resultat boxen med livsmedelsinformation */
-.result {
-  position: relative;
-  top: 20px;
-  max-width: 500px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
-  display: none;
-  margin: 0 auto;
-  border-radius: 15px;
-  width: 100%;
-  max-height: 400px; /* Maximum height for the results box */
-  overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
-}
-
 
 body {
   margin: 0;
