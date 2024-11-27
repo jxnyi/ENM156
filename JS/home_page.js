@@ -1,6 +1,6 @@
 //constant (container for list of elements added by user)
 const ListDiv = document.getElementById("addedListDiv");
-
+ListDiv.style.display = 'none';
 
 /* Hämtar data från foods.json */
 async function fetchFoodData() {
@@ -167,7 +167,6 @@ function addElementToList(id, items) {
   removeButton.onclick = function(){removeElementFromList(food)} // TODO: 
   foodItemDiv.appendChild(removeButton);
   console.log(foodItemDiv.innerHTML);
-  // const ListDiv = document.getElementById('addedListDiv');
 
   ListDiv.appendChild(foodItemDiv); 
   
@@ -178,13 +177,20 @@ function addElementToList(id, items) {
   //inp.addEventListener('')
 }
 
-/*Hides the list of added elements by user*/
-
-// function hideAddedListOnResults()
+/*Removes an item from the addedByUserList upon button click*/
 function removeElementFromList(id) {
   let toRemove = document.getElementById(id);
-  // const ListDiv = document.getElementById()
   toRemove.remove();
+  //check if empty, if so hide
+  var elements = ListDiv.getElementsByClassName('addedFoodItemDiv');
+      if (elements.length == 0) {
+        ListDiv.style.display = 'none'
+      }
+}
+
+/* Upon clicking the Go to Summary button, user will be taken to summary page  */
+function goToSummary() {
+  window.location.href="summary_page.html";
 }
 
 /* Resultatboxen försvinner när man raderar all text från sökfältet */
@@ -193,7 +199,11 @@ function hideResultOnErase(inp, resultSection) {
     if (this.value.trim() === '') {
       resultSection.style.display = 'none';
       
-      ListDiv.style.display = 'block'
+      //check if emply, if empty do nothing else show
+      var elements = ListDiv.getElementsByClassName('addedFoodItemDiv');
+      if (elements.length != 0) {
+        ListDiv.style.display = 'block'
+      }
     }
   });
 }
