@@ -1,3 +1,6 @@
+//constant (container for list of elements added by user)
+const ListDiv = document.getElementById("addedListDiv");
+
 
 /* Hämtar data från foods.json */
 async function fetchFoodData() {
@@ -130,9 +133,8 @@ function showDetails(items) {
         <p><strong>Carbon Output:</strong> ${item.carbonOutput} kg CO2e</p>
         <hr />
       `;
-      const addButton = document.createElement('div');
+      const addButton = document.createElement('button');
       addButton.innerHTML = 'Add';
-      addButton.setAttribute("type", "button");
       addButton.setAttribute("class","addButtons");
       addButton.setAttribute('id', 'addButton' + item.food + '.' + item.country);
       // console.log(addButton.getAttribute("id"));
@@ -158,10 +160,14 @@ function addElementToList(id, items) {
 
   const foodItemDiv = document.createElement('div'); 
   foodItemDiv.setAttribute("class", "addedFoodItemDiv");
-  foodItemDiv.setAttribute("id","foodItemDiv"); 
+  foodItemDiv.setAttribute("id", food); 
   foodItemDiv.innerHTML =  `<p> ${foodName.concat(" ", foodCountry)} </p>`//getFoodItemFromData(foodName,foodCountry, items); //TODO: 
+  const removeButton = document.createElement('button');
+  removeButton.innerHTML = '❌';
+  removeButton.onclick = function(){removeElementFromList(food)} // TODO: 
+  foodItemDiv.appendChild(removeButton);
   console.log(foodItemDiv.innerHTML);
-  const ListDiv = document.getElementById('addedListDiv');
+  // const ListDiv = document.getElementById('addedListDiv');
 
   ListDiv.appendChild(foodItemDiv); 
   
@@ -175,14 +181,18 @@ function addElementToList(id, items) {
 /*Hides the list of added elements by user*/
 
 // function hideAddedListOnResults()
-
+function removeElementFromList(id) {
+  let toRemove = document.getElementById(id);
+  // const ListDiv = document.getElementById()
+  toRemove.remove();
+}
 
 /* Resultatboxen försvinner när man raderar all text från sökfältet */
 function hideResultOnErase(inp, resultSection) {
   inp.addEventListener('input', function () {
     if (this.value.trim() === '') {
       resultSection.style.display = 'none';
-      const ListDiv = document.getElementById("addedListDiv");
+      
       ListDiv.style.display = 'block'
     }
   });
