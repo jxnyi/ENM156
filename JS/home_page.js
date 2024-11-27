@@ -163,12 +163,17 @@ function addElementToList(id, items) {
   foodItemDiv.setAttribute("id", food); 
   foodItemDiv.innerHTML =  `<p> ${foodName.concat(" ", foodCountry)} </p>`//getFoodItemFromData(foodName,foodCountry, items); //TODO: 
   const removeButton = document.createElement('button');
+  removeButton.setAttribute("class", "removeButtons")
   removeButton.innerHTML = '❌';
+  const breakLine = document.createElement('hr');
+  breakLine.setAttribute("class","breakLines")
   removeButton.onclick = function(){removeElementFromList(food)} // TODO: 
   foodItemDiv.appendChild(removeButton);
+  foodItemDiv.appendChild(breakLine);
   console.log(foodItemDiv.innerHTML);
 
   ListDiv.appendChild(foodItemDiv); 
+ 
   
   // console.log(foodName);
   // console.log(foodCountry); 
