@@ -8,6 +8,10 @@ async function fetchFoodData() {
     const formattedData = data.map(item => `${item.food} (${item.country})`);
     autocomplete(document.getElementById('myInput'), data, formattedData);
     handleEnterKeySearch(document.getElementById('myInput'), data);
+
+    const countryData = data.map(item => `${item.country}`);        
+    handleCountryDropdown(countryData);               
+
   } catch (error) {
     console.error('Error:', error);
   }
@@ -18,6 +22,15 @@ function autocomplete(inp, fullData, arr) {
   let currentFocus;
   inp.addEventListener('input', function () {
     const val = this.value.toLowerCase();
+
+    const countryMenu = document.getElementById('countries');
+    const chosenCountry = countryMenu.value;
+    var filteredArr = arr;
+    
+    if (!(chosenCountry === 'Country')) {
+      filteredArr = arr.filter(entry => entry.includes(chosenCountry));
+    } 
+
     closeAllLists();
 
     if (!val) return false;
@@ -28,7 +41,7 @@ function autocomplete(inp, fullData, arr) {
     listDiv.setAttribute('class', 'autocomplete-items');
     this.parentNode.appendChild(listDiv);
 
-    arr.forEach((item, index) => {
+    filteredArr.forEach((item, index) => {
       if (item.toLowerCase().includes(val)) {
         const itemDiv = document.createElement('div');
         itemDiv.innerHTML = `<strong>${item.substr(0, val.length)}</strong>${item.substr(val.length)}`;
@@ -55,13 +68,13 @@ function autocomplete(inp, fullData, arr) {
     if (!list) return;
 
     let items = list.getElementsByTagName('div');
-    if (e.keyCode === 40) {
+    if (e.keyCode === 40) {           //arrowkey down
       currentFocus++;
       addActive(items);
-    } else if (e.keyCode === 38) {
+    } else if (e.keyCode === 38) {    //arrowkey up
       currentFocus--;
       addActive(items);
-    } else if (e.keyCode === 13) {
+    } else if (e.keyCode === 13) {    //enter
       e.preventDefault();
       if (currentFocus > -1) {
         items[currentFocus].click();
@@ -109,46 +122,36 @@ function autocomplete(inp, fullData, arr) {
 
 /* hämta och visa information för sökta livsmedlet */
 function showDetails(items) {
-  const resultContainer = document.querySelector('.result-container'); // Select result container
-  const resultContent = document.getElementById('result'); // Select the result content area
-  const template = document.getElementById('result-template'); // Access the template
-
-  resultContent.innerHTML = ''; // Clear previous results
+  const resultContainer = document.getElementById('result');
+  resultContainer.innerHTML = ''; // Clear previous results
 
   if (items.length === 0) {
-    // No results, hide the container
-    resultContainer.style.display = 'none';
+    resultContainer.innerHTML = '<p>Inga resultat hittades.</p>';
   } else {
-    // Show the container if there are results
     items.forEach(item => {
-      const detailDiv = template.content.cloneNode(true);
-
-      // Populate template with data
-      detailDiv.querySelector('.food-name').textContent = item.food;
-      detailDiv.querySelector('.food-country').textContent = item.country;
-      detailDiv.querySelector('.food-raknebas').textContent = item.raknebas;
-      detailDiv.querySelector('.food-carbon-output').textContent = item.carbonOutput;
-
-      resultContent.appendChild(detailDiv);
+      const detailDiv = document.createElement('div');
+      detailDiv.innerHTML = `
+        <h3> ${item.food}</h3>
+        <p> ${item.country}</p>
+        <p> ${item.raknebas}</p>
+        <p><strong>Carbon Output:</strong> ${item.carbonOutput} kg CO2e</p>
+        <hr />
+      `;
+      resultContainer.appendChild(detailDiv);
     });
-
-    resultContainer.style.display = 'block'; // Ensure the container is visible
   }
+
+  resultContainer.style.display = 'block';
 }
 
 /* Resultatboxen försvinner när man raderar all text från sökfältet */
-function hideResultOnErase(inp) {
-  const resultContainer = document.querySelector('.result-container'); // Select result container
-  const resultContent = document.getElementById('result'); // Select the result content area
-
+function hideResultOnErase(inp, resultSection) {
   inp.addEventListener('input', function () {
     if (this.value.trim() === '') {
-      resultContent.innerHTML = ''; // Clear results content
-      resultContainer.style.display = 'none'; // Hide the result container
+      resultSection.style.display = 'none';
     }
   });
 }
-
 
 function handleEnterKeySearch(inp, fullData) {
   inp.addEventListener('keydown', function (e) {
@@ -160,15 +163,39 @@ function handleEnterKeySearch(inp, fullData) {
         const matchingItems = fullData.filter(item =>
           `${item.food} (${item.country})`.toLowerCase().includes(val)
         );
-        showDetails(matchingItems);
+        const countryMenu = document.getElementById('countries');
+        const chosenCountry = countryMenu.value;
+        var filteredMatchingItems = matchingItems;
+        if (!(chosenCountry === 'Country')) {
+          filteredMatchingItems = matchingItems.filter(item => `${item.food} (${item.country})`.includes(chosenCountry));
+        }
+        showDetails(filteredMatchingItems);
       }
     }
   });
 }
-
 
 fetchFoodData();
 
 const searchBar = document.getElementById('myInput');
 const resultSection = document.getElementById('result');
 hideResultOnErase(searchBar, resultSection);
+
+/* Skapar landfiltreringsalternativen baserat på data i json*/
+function handleCountryDropdown(data){
+  const allCountries = [];
+  for (const country of data) {
+    if (!allCountries.includes(country)) {
+      allCountries.push(country);
+    }
+  }
+  
+  const countrySelect = document.getElementById('countries');
+
+  for (const country of allCountries) {
+    var newOption = document.createElement('option');
+    newOption.value = country;
+    newOption.innerHTML = country;
+    countrySelect.appendChild(newOption);
+  }
+}

@@ -5,17 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="CSS/home_page.css">
-  <link rel="stylesheet" href="CSS/topbar.css">
   <title>SustainaBite</title>
 </head>
 <body>
+  
 
   <!-- Topbar -->
   <header class="topbar">
     <div class="logo">SustainaBite</div>
     <nav class="nav-links">
-      <a href="index.html">Hem</a>
-      <a href="omOss.html">Om Oss</a>
+      <a href="hem">Hem</a>
+      <a href="co2kalkylator">CO2-Kalkylator</a>
+      <a href="omoss">Om Oss</a>
     </nav>
   </header>
 
@@ -23,24 +24,18 @@
 
   <form autocomplete="off">
     <div class="autocomplete">
-     
       <span class="search-icon material-symbols-outlined">search</span>
       <input id="myInput" type="search" placeholder="Sök livsmedel">
+
+      <span class="filter-icon material-symbols-outlined">filter_alt</span>
+      <select id = "countries" name = "countries">
+        <option value="Country" selected>Alla Länder</option>
+      </select>
+
     </div>
   </form>
 
-<div class="result-container">
-  <div id="result"></div>
-  <template id="result-template">
-    <div>
-      <h3 class="food-name"></h3>
-      <p class="food-country"></p>
-      <p class="food-raknebas"></p>
-      <p><strong>Carbon Output:</strong> <span class="food-carbon-output"></span> kg CO2e</p>
-      <hr />
-    </div>
-  </template>
-</div>
+  <div class="result" id="result"></div>
 
   <footer class="footer">
     <p>&copy; 2024 SustainaBite - Hållbara Val för Klimatet</p>
