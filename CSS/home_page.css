@@ -120,6 +120,15 @@ input[type="search"].active {
   overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
 }
 
+.addButtons{
+  height:22px; 
+  width:60px; 
+  margin: -20px -50px; 
+  position:relative;
+  top:12%; 
+  left:95%;
+
+}
 
 body {
   margin: 0;
@@ -221,3 +230,4 @@ the class includes both the food item and its remove button.
   width: 100%;
   margin-bottom: 10px;
 }
+

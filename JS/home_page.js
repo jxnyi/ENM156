@@ -134,7 +134,7 @@ function showDetails(items) {
         <hr />
       `;
       const addButton = document.createElement('button');
-      addButton.innerHTML = 'Add';
+      addButton.innerHTML = 'Lägg till';
       addButton.setAttribute("class","addButtons");
       addButton.setAttribute('id', 'addButton' + item.food + '.' + item.country);
       // console.log(addButton.getAttribute("id"));
@@ -172,7 +172,11 @@ function addElementToList(id, items) {
   foodItemDiv.appendChild(breakLine);
   console.log(foodItemDiv.innerHTML);
 
-  ListDiv.appendChild(foodItemDiv); 
+  // Prevent from adding duplicates
+  const foodItem = document.getElementById(food)
+  if(!(ListDiv.contains(foodItem))){
+    ListDiv.appendChild(foodItemDiv); 
+  }
  
   
   // console.log(foodName);
