@@ -109,8 +109,12 @@ function autocomplete(inp, fullData, arr) {
 
 
 
-/* hämta och visa information för sökta livsmedlet */
+/* hämta och visa information för sökta livsmedlet, 
+also adds add buttons*/
 function showDetails(items) {
+  const ListDiv = document.getElementById("addedListDiv");
+  ListDiv.style.display = 'none';
+
   const resultContainer = document.getElementById('result');
   resultContainer.innerHTML = ''; // Clear previous results
 
@@ -133,27 +137,30 @@ function showDetails(items) {
       addButton.setAttribute('id', 'addButton' + item.food + '.' + item.country);
       // console.log(addButton.getAttribute("id"));
       //addElementToList(addButton.getAttribute('id'));
+      addButton.onclick = function(){addElementToList(addButton.getAttribute('id'), items)};
       resultContainer.appendChild(addButton);
       resultContainer.appendChild(detailDiv);
     });
   }
 
   resultContainer.style.display = 'block';
+  // addButtonCreator(items);
 }
 
 
-
-function addElementToList(id) {
-  const food = id.substring(9);
+/* After clicking the add button the function will respond by adding 
+food item as a div to the container (addedByUserDivList) */
+function addElementToList(id, items) {
+  const food = id.substr(9);
   i = food.indexOf('.');
-  let foodName = food.substring(0, i);
-  let foodCountry = food.substring(i+1);
+  let foodName = food.substr(0, i);
+  let foodCountry = food.substr(i+1);
 
   const foodItemDiv = document.createElement('div'); 
   foodItemDiv.setAttribute("class", "addedFoodItemDiv");
   foodItemDiv.setAttribute("id","foodItemDiv"); 
-  foodItemDiv.innerHTML = getFoodItemFromData(foodName,foodCountry); //TOD
-
+  foodItemDiv.innerHTML =  `<p> ${foodName.concat(" ", foodCountry)} </p>`//getFoodItemFromData(foodName,foodCountry, items); //TODO: 
+  console.log(foodItemDiv.innerHTML);
   const ListDiv = document.getElementById('addedListDiv');
 
   ListDiv.appendChild(foodItemDiv); 
@@ -165,15 +172,18 @@ function addElementToList(id) {
   //inp.addEventListener('')
 }
 
-function getFoodItemFromData(name, country) {
-  null; 
-}
+/*Hides the list of added elements by user*/
+
+// function hideAddedListOnResults()
+
 
 /* Resultatboxen försvinner när man raderar all text från sökfältet */
 function hideResultOnErase(inp, resultSection) {
   inp.addEventListener('input', function () {
     if (this.value.trim() === '') {
       resultSection.style.display = 'none';
+      const ListDiv = document.getElementById("addedListDiv");
+      ListDiv.style.display = 'block'
     }
   });
 }
