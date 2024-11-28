@@ -128,7 +128,6 @@ function showDetails(items) {
       detailDiv.querySelector('.food-country').textContent = item.country;
       detailDiv.querySelector('.food-raknebas').textContent = item.raknebas;
       detailDiv.querySelector('.food-carbon-output').textContent = item.carbonOutput;
-
       resultContent.appendChild(detailDiv);
     });
 
@@ -158,7 +157,7 @@ function handleEnterKeySearch(inp, fullData) {
 
       if (val) {
         const matchingItems = fullData.filter(item =>
-          `${item.food} (${item.country})`.toLowerCase().includes(val)
+          `${item.food} (${item.country})`.toLowerCase().startsWith(val)
         );
         showDetails(matchingItems);
       }
@@ -172,3 +171,29 @@ fetchFoodData();
 const searchBar = document.getElementById('myInput');
 const resultSection = document.getElementById('result');
 hideResultOnErase(searchBar, resultSection);
+
+// Sorting function 
+let isAscending = true;
+
+// Function to sort and display the results
+function sortResults() {
+  const resultContent = document.getElementById('result');
+  const items = Array.from(resultContent.children);
+
+  // Sort items based on carbon output
+  items.sort((a, b) => {
+    const carbonA = parseFloat(a.querySelector('.food-carbon-output').textContent);
+    const carbonB = parseFloat(b.querySelector('.food-carbon-output').textContent);
+    return isAscending ? carbonA - carbonB : carbonB - carbonA;
+  });
+
+  // Clear existing results and append sorted items
+  resultContent.innerHTML = '';
+  items.forEach(item => resultContent.appendChild(item));
+
+  // Toggle the sort order for the next click
+  isAscending = !isAscending;
+}
+
+// Add event listener to the sort button
+document.querySelector('.sort-container button').addEventListener('click', sortResults);
