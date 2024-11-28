@@ -19,15 +19,14 @@ h2 {
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  width: 100%;
-  max-width: 500px;
+  width: 800px;
   position: relative;
 }
 
 /* Resultat boxen med livsmedelsinformation */
 .result-container {
   width: 100%;        
-  max-width: 500px; 
+  max-width: 750px; 
   margin: 0 auto;       
   padding: 10px;        
   box-sizing: border-box;
@@ -38,13 +37,32 @@ h2 {
   display: none;
 }
 
+/* Filtermenyn */
+select{
+  width: 100%; 
+  max-width: 200px; 
+  padding: 10px 1px 10px 40px; 
+  font-size: 16px;
+  border: 10px solid white;
+  border-radius: 30px;
+  background-color: #f1f1f1;
+  transition: border-radius 0.3s ease;
+  appearance: none;
+  outline: none;
+}
+
+/* Fiteralternativen */
+option{
+  background-color: white;
+}
+
 /* aktiv search bar - när användaren söker på något */
 input[type="search"] {
   width: 100%; 
-  max-width: 500px; 
+  max-width: 800px; 
   padding: 10px 10px 10px 40px; 
   font-size: 16px;
-  border: 1px solid #ccc;
+  border: 10px solid white;
   border-radius: 30px;
   background-color: #f1f1f1;
   transition: border-radius 0.3s ease;
@@ -60,7 +78,18 @@ input[type="search"].active {
 .search-icon {
   position: absolute; 
   top: 50%;           
-  left: 15px;        
+  left: 20px;        
+  transform: translateY(-50%); 
+  font-size: 20px;    
+  color: #888;       
+  pointer-events: none; 
+}
+
+/* Filtrets ikon på sidan */
+.filter-icon {
+  position: absolute; 
+  top: 50%;           
+  right: 160px;        
   transform: translateY(-50%); 
   font-size: 20px;    
   color: #888;       
@@ -124,4 +153,3 @@ body {
   overflow-x: hidden; /* Förhindrar sidscrollning */
   box-sizing: border-box;
 }
-

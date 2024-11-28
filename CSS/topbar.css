@@ -10,9 +10,11 @@ body {
 }
 /* Loggans position */
 h2 {
+  font: 35px Arial; 
+  font-weight: bold;
   text-align: center;
   margin-top: 100px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .topbar {
