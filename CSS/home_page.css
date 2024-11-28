@@ -1,3 +1,18 @@
+* {
+  box-sizing: border-box;
+}
+
+/* Textstorlek för loggan "SustainaBite" */
+body {
+  font: 16px Arial;
+}
+/* Loggans position */
+h2 {
+  text-align: center;
+  margin-top: 70px;
+  margin-bottom: 20px;
+}
+
 /* Search bar */
 .autocomplete {
   display: flex;
