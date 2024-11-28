@@ -1,3 +1,6 @@
+var allJsonData;
+var filteredJsonData;
+var searchedValue = "undefined";
 
 /* Hämtar data från foods.json */
 async function fetchFoodData() {
@@ -5,6 +8,9 @@ async function fetchFoodData() {
     const response = await fetch('foods.json');
     if (!response.ok) throw new Error('Failed to fetch data');
     const data = await response.json();
+
+    allJsonData = data;
+
     const formattedData = data.map(item => `${item.food} (${item.country})`);
     autocomplete(document.getElementById('myInput'), data, formattedData);
     handleEnterKeySearch(document.getElementById('myInput'), data);
@@ -50,6 +56,7 @@ function autocomplete(inp, fullData, arr) {
           const selectedData = fullData.filter(
             foodItem => `${foodItem.food} (${foodItem.country})`.toLowerCase() === item.toLowerCase()
           );
+          searchedValue = item.toLowerCase();
           if (selectedData.length > 0) {
             showDetails(selectedData); // Display the results in the results box
           }
@@ -60,7 +67,6 @@ function autocomplete(inp, fullData, arr) {
       }
     });
   });
-
 
   /* Funktionen lyssnar på när användaren börjar skriva i sökfältet */
   inp.addEventListener('keydown', function (e) {
@@ -117,7 +123,6 @@ function autocomplete(inp, fullData, arr) {
       closeAllLists();
     }
     });
-
 }
 
 /* hämta och visa information för sökta livsmedlet */
@@ -158,10 +163,10 @@ function hideResultOnErase(inp) {
     if (this.value.trim() === '') {
       resultContent.innerHTML = ''; // Clear results content
       resultContainer.style.display = 'none'; // Hide the result container
+      searchedValue = "undefined"
     }
   });
 }
-
 
 function handleEnterKeySearch(inp, fullData) {
   inp.addEventListener('keydown', function (e) {
@@ -170,21 +175,20 @@ function handleEnterKeySearch(inp, fullData) {
       const val = inp.value.toLowerCase().trim();
 
       if (val) {
-        const matchingItems = fullData.filter(item =>
+        searchedValue = val;
+        var jsonData = fullData;
+        if (filteredJsonData && filteredJsonData !== "null" && filteredJsonData !== "undefined") {
+          jsonData = filteredJsonData;
+        }
+        const matchingItems = jsonData.filter(item =>
           `${item.food} (${item.country})`.toLowerCase().includes(val)
         );
-        const countryMenu = document.getElementById('countries');
-        const chosenCountry = countryMenu.value;
-        var filteredMatchingItems = matchingItems;
-        if (!(chosenCountry === 'Country')) {
-          filteredMatchingItems = matchingItems.filter(item => `${item.food} (${item.country})`.includes(chosenCountry));
-        }
-        showDetails(filteredMatchingItems);
+
+        showDetails(matchingItems);
       }
     }
   });
 }
-
 
 fetchFoodData();
 
@@ -200,7 +204,6 @@ function handleCountryDropdown(data){
       allCountries.push(country);
     }
   }
-  
   const countrySelect = document.getElementById('countries');
 
   for (const country of allCountries) {
@@ -208,5 +211,28 @@ function handleCountryDropdown(data){
     newOption.value = country;
     newOption.innerHTML = country;
     countrySelect.appendChild(newOption);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('countries').addEventListener('input', handleSelect);
+})
+
+/* Filtrerar redan sökta resultat baserat på senaste sökningen */ 
+function handleSelect(ev){
+  let select = ev.target;
+  let selectedCountry = select.value;
+  if (allJsonData && allJsonData !== "null" && allJsonData !== "undefined") {
+    filteredJsonData = allJsonData;
+    if (!(selectedCountry === 'Country')) {
+      filteredJsonData = allJsonData.filter(item => `${item.food} (${item.country})`.includes(selectedCountry));
+    }
+    const resultContainer = document.querySelector('.result-container'); // Select result container
+    if (resultContainer.style.display && resultContainer.style.display !== "null" && resultContainer.style.display !== "undefined" && searchedValue !== "undefined"){
+      const matchingItems = filteredJsonData.filter(item =>
+        `${item.food} (${item.country})`.toLowerCase().includes(searchedValue)
+      );
+      showDetails(matchingItems);
+    }
   }
 }
