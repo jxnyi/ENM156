@@ -25,12 +25,34 @@
 
   <form autocomplete="off">
     <div class="autocomplete">
+
       <span class="search-icon material-symbols-outlined">search</span>
       <input id="myInput" type="search" placeholder="Sök livsmedel">
+
+      <span class="filter-icon material-symbols-outlined">filter_alt</span>
+      <select id = "countries" name = "countries">
+        <option value="Country" selected>Alla Länder</option>
+      </select>
+
     </div>
   </form>
 
-  <div class="result" id="result"></div>
+
+<div class="result-container">
+  <div class="sort-container">
+    <button type="button">▲▼</button>
+  </div>
+  <div id="result"></div>
+  <template id="result-template">
+    <div>
+      <h3 class="food-name"></h3>
+      <p class="food-country"></p>
+      <p class="food-raknebas"></p>
+      <p><strong>Carbon Output:</strong> <span class="food-carbon-output"></span> kg CO2e</p>
+      <hr />
+    </div>
+  </template>
+</div>
 
   <footer class="footer">
     <p>&copy; 2024 SustainaBite - Hållbara Val för Klimatet</p>
