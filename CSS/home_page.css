@@ -35,7 +35,52 @@ h2 {
   max-height: 500px;
   overflow-y: auto;
   display: none;
+ 
 }
+
+
+.sort-container {
+  position: sticky; /* Keeps it fixed within the result box */
+  top: 0; /* Always stays at the top of the result box */
+  display: flex; /* Use flexbox */
+  justify-content: flex-end; /* Align the button to the right */
+}
+
+
+.sort-container button {
+  width: 20px;
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text */
+  padding: 10px 20px; /* Add padding for size */
+  font-size: 12px; /* Text size */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
+}
+
+/* Add hover effect */
+.sort-container button:hover {
+  background-color: #45a049; /* Slightly darker green */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Add active effect */
+.sort-container button:active {
+  background-color: #3e8e41; /* Even darker green */
+  transform: scale(0.95); /* Slightly shrink on click */
+}
+
+/* Optional: Disabled state */
+.sort-container button:disabled {
+  background-color: #cccccc; /* Grey background */
+  color: #666666; /* Grey text */
+  cursor: not-allowed; /* No pointer cursor */
+}
+
 
 /* Filtermenyn */
 select{
