@@ -180,7 +180,7 @@ function handleEnterKeySearch(inp, fullData) {
           jsonData = filteredJsonData;
         }
         const matchingItems = jsonData.filter(item =>
-          `${item.food} (${item.country})`.toLowerCase().includes(val)
+          `${item.food} (${item.country})`.toLowerCase().startsWith(val)
         );
 
         showDetails(matchingItems);
