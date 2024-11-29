@@ -127,5 +127,15 @@ body {
   padding: 0;
   overflow-x: hidden; /* Förhindrar sidscrollning */
   box-sizing: border-box;
+  background-image:  url(pic2.png);
+  background-position: 0px,300px; /* Moves the image upwards */
+  background-size: cover; /* Ensures it covers the screen nicely */
 }
 
+.logo-img {
+  display: block;       
+  margin: 0 auto;        
+  width: 150px;           
+  height: auto;         
+  margin-bottom: 10px;   
+}
