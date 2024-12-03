@@ -137,8 +137,6 @@ function showDetails(items) {
       addButton.innerHTML = 'Lägg till';
       addButton.setAttribute("class","addButtons");
       addButton.setAttribute('id', 'addButton' + item.food + '.' + item.country);
-      // console.log(addButton.getAttribute("id"));
-      //addElementToList(addButton.getAttribute('id'));
       addButton.onclick = function(){addElementToList(addButton.getAttribute('id'), items)};
       resultContainer.appendChild(addButton);
       resultContainer.appendChild(detailDiv);
@@ -146,7 +144,6 @@ function showDetails(items) {
   }
 
   resultContainer.style.display = 'block';
-  // addButtonCreator(items);
 }
 
 
@@ -177,13 +174,6 @@ function addElementToList(id, items) {
   if(!(ListDiv.contains(foodItem))){
     ListDiv.appendChild(foodItemDiv); 
   }
- 
-  
-  // console.log(foodName);
-  // console.log(foodCountry); 
-
-  //const addElementButton = document.getElementById
-  //inp.addEventListener('')
 }
 
 /*Removes an item from the addedByUserList upon button click*/
@@ -195,6 +185,13 @@ function removeElementFromList(id) {
       if (elements.length == 0) {
         ListDiv.style.display = 'none'
       }
+}
+
+/* Functionality for rensa-allt button */
+function removeAllElementsUser() {
+  const parentListDiv = document.getElementById('addedListDiv'); 
+  parentListDiv.innerHTML = "";
+  ListDiv.style.display = 'none'
 }
 
 /* Upon clicking the Go to Summary button, user will be taken to summary page  */
