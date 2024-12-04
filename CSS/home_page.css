@@ -36,7 +36,7 @@ h2 {
   max-height: 500px;
   overflow-y: auto;
   display: none;
- 
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent (90% opacity) */
 }
 
 
@@ -50,7 +50,7 @@ h2 {
 
 .sort-container button {
   width: 20px;
-  background-color: #4CAF50; /* Green background */
+  background-color: #007004; /* Green background */
   color: white; /* White text */
   padding: 10px 20px; /* Add padding for size */
   font-size: 12px; /* Text size */
@@ -206,7 +206,8 @@ body {
 .logo-img {
   display: block;       
   margin: 0 auto;        
-  width: 150px;           
+  width: 100px;           
   height: auto;         
   margin-bottom: 10px;   
 }
+
