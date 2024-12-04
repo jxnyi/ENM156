@@ -211,3 +211,23 @@ body {
   margin-bottom: 10px;   
 }
 
+.scale-container {
+  width: 150px;
+  height: 20px; /* Adjust height to fit the text above the scale */
+  background: linear-gradient(to right, green, yellow, orange, red);
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack the text above the scale */
+  justify-content: center; /* Center align content vertically */
+  align-items: center; /* Center align content horizontally */
+  padding: 5px;
+}
+
+.scale-indicator {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 2px;
+  background-color: black;
+}

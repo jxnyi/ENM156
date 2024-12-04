@@ -46,7 +46,7 @@ function autocomplete(inp, fullData, arr) {
     listDiv.setAttribute('id', this.id + 'autocomplete-list');
     listDiv.setAttribute('class', 'autocomplete-items');
     this.parentNode.appendChild(listDiv);
-
+    
     filteredArr.forEach((item, index) => {
       if (item.toLowerCase().includes(val)) {
         const itemDiv = document.createElement('div');
