@@ -14,7 +14,7 @@
     <div class="logo">SustainaBite</div>
     <nav class="nav-links">
       <a href="hem">Hem</a>
-      <a href="summary_page.html">Summering</a>
+      <a onclick= goToSummary()>Summering</a>
       <a href="omoss">Om Oss</a>
     </nav>
   </header>
@@ -29,10 +29,8 @@
   </form>
 
   <div class="result" id="result"></div>
-  <div class="addedByUserListDiv" id="addedListDiv">
-    <button type="button" id="clearUserList" onclick="removeAllElementsUser()">Rensa</button> 
-  </div>
-  
+  <div class="addedByUserListDiv" id="addedListDiv"></div>
+  <button type="button" id="clearUserList" onclick="removeAllElementsUser()">Rensa</button> 
 
   <footer class="footer">
     <p>&copy; 2024 SustainaBite - Hållbara Val för Klimatet</p>

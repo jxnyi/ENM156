@@ -1,6 +1,7 @@
 //constant (container for list of elements added by user)
 const ListDiv = document.getElementById("addedListDiv");
 ListDiv.style.display = 'none';
+const userList = []; 
 
 /* Hämtar data från foods.json */
 async function fetchFoodData() {
@@ -174,6 +175,7 @@ function addElementToList(id, items) {
   if(!(ListDiv.contains(foodItem))){
     ListDiv.appendChild(foodItemDiv); 
   }
+  updateVisibilityClearAllButton();
 }
 
 /*Removes an item from the addedByUserList upon button click*/
@@ -182,20 +184,33 @@ function removeElementFromList(id) {
   toRemove.remove();
   //check if empty, if so hide
   var elements = ListDiv.getElementsByClassName('addedFoodItemDiv');
-      if (elements.length == 0) {
-        ListDiv.style.display = 'none'
-      }
+  if (elements.length == 0) {
+    ListDiv.style.display = 'none'
+    clearButton.style.display = 'none'; 
+  }
 }
 
 /* Functionality for rensa-allt button */
 function removeAllElementsUser() {
+
   const parentListDiv = document.getElementById('addedListDiv'); 
   parentListDiv.innerHTML = "";
   ListDiv.style.display = 'none'
+  const clearButton = document.getElementById('clearUserList');
+  clearButton.style.display = 'none'; 
 }
 
 /* Upon clicking the Go to Summary button, user will be taken to summary page  */
 function goToSummary() {
+  for (const element of ListDiv.getElementsByClassName('addedFoodItemDiv')) {
+    const foodCountry = element.getAttribute('id'); 
+    i = foodCountry.indexOf('.');
+    let name = foodCountry.substr(0, i);
+    let country = foodCountry.substr(i+1);
+    userList.push({foodName:name, foodCountry:country});
+  }
+  
+  sessionStorage.setItem('userList', JSON.stringify(userList));
   window.location.href="summary_page.html";
 }
 
@@ -208,10 +223,21 @@ function hideResultOnErase(inp, resultSection) {
       //check if emply, if empty do nothing else show
       var elements = ListDiv.getElementsByClassName('addedFoodItemDiv');
       if (elements.length != 0) {
-        ListDiv.style.display = 'block'
+        ListDiv.style.display = 'block';
+        updateVisibilityClearAllButton();
       }
     }
   });
+}
+
+function updateVisibilityClearAllButton() {
+  const listDiv = document.getElementById('addedListDiv');
+  const clearButton = document.getElementById('clearUserList'); 
+    if(listDiv.children.length > 0 && listDiv.style.display == 'block'){
+      clearButton.style.display = 'block'; 
+    } else {
+      clearButton.style.display = 'none'; 
+    }
 }
 
 function handleEnterKeySearch(inp, fullData) {
@@ -230,6 +256,7 @@ function handleEnterKeySearch(inp, fullData) {
   });
 }
 
+updateVisibilityClearAllButton();
 
 fetchFoodData();
 
