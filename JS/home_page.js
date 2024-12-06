@@ -3,6 +3,19 @@ const ListDiv = document.getElementById("addedListDiv");
 ListDiv.style.display = 'none';
 const userList = []; 
 
+// const testingList = ["summary!!Kikärter.Kanada","summary!!Nötkött.Brasilien"];
+window.onload = (event => {
+  const listFromSummary = JSON.parse(sessionStorage.getItem('listFromSummary'));
+  
+  if (listFromSummary != null && listFromSummary.length >= 1) {
+    for (let element of listFromSummary) {
+      addElementToList(element);
+    }
+    ListDiv.style.display = 'block';
+    updateVisibilityClearAllButton();
+  }
+})
+
 /* Hämtar data från foods.json */
 async function fetchFoodData() {
   try {
@@ -111,8 +124,6 @@ function autocomplete(inp, fullData, arr) {
 
 }
 
-
-
 /* hämta och visa information för sökta livsmedlet, 
 also adds add buttons*/
 function showDetails(items) {
@@ -138,7 +149,7 @@ function showDetails(items) {
       addButton.innerHTML = 'Lägg till';
       addButton.setAttribute("class","addButtons");
       addButton.setAttribute('id', 'addButton' + item.food + '.' + item.country);
-      addButton.onclick = function(){addElementToList(addButton.getAttribute('id'), items)};
+      addButton.onclick = function(){addElementToList(addButton.getAttribute('id'))};
       resultContainer.appendChild(addButton);
       resultContainer.appendChild(detailDiv);
     });

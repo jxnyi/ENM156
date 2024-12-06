@@ -1,4 +1,9 @@
 const userListSummary = JSON.parse(sessionStorage.getItem('userList'))
+const listForHomePage = []; 
+
+function updateUserListForHomepage(foodName,foodCountry){
+    listForHomePage.push('summary!!' + foodName + '.' + foodCountry);
+} 
 
 function fetchFoodData() {
     fetch('./foods.json')
@@ -33,6 +38,9 @@ function displayFilteredUserData(filteredUserData) {
  
     /*For each json row in json data*/
     filteredUserData.forEach(element => {
+
+        updateUserListForHomepage(element.food, element.country);
+
         //check to add right units to table
         perKG = element.raknebas.includes("kg");
 
@@ -92,6 +100,10 @@ function updateTotalCarbonOutput() {
     tableCarbonSum.textContent = totalCarbonOutput.toFixed(1);
 }
 
+function goToHome() {
+    sessionStorage.setItem('listFromSummary', JSON.stringify(listForHomePage));
+    window.location.href="index.html";
+}
 
 
 fetchFoodData();
