@@ -150,7 +150,7 @@ function showDetails(items) {
 
 /* After clicking the add button the function will respond by adding 
 food item as a div to the container (addedByUserDivList) */
-function addElementToList(id, items) {
+function addElementToList(id) {
   const food = id.substr(9);
   i = food.indexOf('.');
   let foodName = food.substr(0, i);
