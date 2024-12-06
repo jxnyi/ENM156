@@ -121,13 +121,19 @@ input[type="search"].active {
 }
 
 .addButtons{
-  height:22px; 
-  width:60px; 
+  height:30px; 
+  width:80px; 
   margin: -20px -50px; 
   position:relative;
   top:12%; 
-  left:95%;
-
+  left:92%;
+  border-radius: 10%;
+  background-color: #4CAF50;
+  color: white; 
+  font-size: 14px; 
+  font-weight: bold; 
+  text-align: center;
+  cursor: pointer;
 }
 
 body {
@@ -231,3 +237,25 @@ the class includes both the food item and its remove button.
   margin-bottom: 10px;
 }
 
+#clearUserList {
+  position: relative; 
+  top:51px;
+  width:90px; 
+  height:30px;
+  left: 50%; 
+  transform: translateX(-50%); 
+  padding: 8px 16px;
+  background-color: #eb7f7f;
+  color: white; 
+  font-size: 14px; 
+  font-weight: bold; 
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 10; 
+}
+
+#clearUserList:hover {
+  background-color: #ff4c4c; 
+}

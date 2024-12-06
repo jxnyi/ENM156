@@ -156,6 +156,7 @@ function showDetails(items) {
   }
 
   resultContainer.style.display = 'block';
+  updateVisibilityClearAllButton(); 
 }
 
 

@@ -1,12 +1,19 @@
+body {
+  font: 16px Arial;
+}
+
 #summary-table {
-    width: 100%;
-
+  width: 100%;
+  text-align: center; 
 }
 
-#summary-table tbody{
-    
+.summaryList {
+  align-items: center;
 }
 
+#total-carbon-output {
+  margin: 2%
+}
 
 .topbar {
     display: flex;
