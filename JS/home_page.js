@@ -3,6 +3,10 @@ const ListDiv = document.getElementById("addedListDiv");
 ListDiv.style.display = 'none';
 const userList = []; 
 
+var allJsonData;
+var filteredJsonData;
+var searchedValue = "undefined";
+
 // const testingList = ["summary!!Kikärter.Kanada","summary!!Nötkött.Brasilien"];
 window.onload = (event => {
   const listFromSummary = JSON.parse(sessionStorage.getItem('listFromSummary'));
@@ -141,40 +145,6 @@ function autocomplete(inp, fullData, arr) {
     });
 }
 
-// /* hämta och visa information för sökta livsmedlet, 
-// also adds add buttons*/
-// function showDetails(items) {
-//   const ListDiv = document.getElementById("addedListDiv");
-//   ListDiv.style.display = 'none';
-
-//   const resultContainer = document.getElementById('result');
-//   resultContainer.innerHTML = ''; // Clear previous results
-
-//   if (items.length === 0) {
-//     resultContainer.innerHTML = '<p>Inga resultat hittades.</p>';
-//   } else {
-//     items.forEach(item => {
-//       const detailDiv = document.createElement('div');
-//       detailDiv.innerHTML = `
-//         <h3> ${item.food}</h3>
-//         <p> ${item.country}</p>
-//         <p> ${item.raknebas}</p>
-//         <p><strong>Carbon Output:</strong> ${item.carbonOutput} kg CO2e</p>
-//         <hr />
-//       `;
-//       const addButton = document.createElement('button');
-//       addButton.innerHTML = 'Lägg till';
-//       addButton.setAttribute("class","addButtons");
-//       addButton.setAttribute('id', 'addButton' + item.food + '.' + item.country);
-//       addButton.onclick = function(){addElementToList(addButton.getAttribute('id'))};
-//       resultContainer.appendChild(addButton);
-//       resultContainer.appendChild(detailDiv);
-//     });
-//   }
-
-//   resultContainer.style.display = 'block';
-//   updateVisibilityClearAllButton(); 
-// }
 
 /* hämta och visa information för sökta livsmedlet */
 function showDetails(items) {
@@ -205,6 +175,12 @@ function showDetails(items) {
       addButton.setAttribute('id', 'addButton' + item.food + '.' + item.country);
       addButton.onclick = function(){addElementToList(addButton.getAttribute('id'))};
       resultContent.appendChild(addButton);
+
+      // Position the black indicator based on CO2 output
+      const carbonOutput = parseFloat(item.carbonOutput);
+      const position = Math.min(1.5, Math.max(0, carbonOutput)) / 1.5 * 100;
+      const indicator = detailDiv.querySelector('.scale-indicator');
+      indicator.style.left = `${position}%`;
       
       resultContent.appendChild(detailDiv);
 
@@ -281,21 +257,6 @@ function goToSummary() {
   window.location.href="summary_page.html";
 }
 
-// /* Resultatboxen försvinner när man raderar all text från sökfältet */
-// function hideResultOnErase(inp, resultSection) {
-//   inp.addEventListener('input', function () {
-//     if (this.value.trim() === '') {
-//       resultSection.style.display = 'none';
-      
-//       //check if emply, if empty do nothing else show
-//       var elements = ListDiv.getElementsByClassName('addedFoodItemDiv');
-//       if (elements.length != 0) {
-//         ListDiv.style.display = 'block';
-//         updateVisibilityClearAllButton();
-//       }
-//     }
-//   });
-// }
 
 /* Resultatboxen försvinner när man raderar all text från sökfältet */
 function hideResultOnErase(inp) {
@@ -335,9 +296,15 @@ function handleEnterKeySearch(inp, fullData) {
       const val = inp.value.toLowerCase().trim();
 
       if (val) {
-        const matchingItems = fullData.filter(item =>
-          `${item.food} (${item.country})`.toLowerCase().includes(val)
+        searchedValue = val;
+        var jsonData = fullData;
+        if (filteredJsonData && filteredJsonData !== "null" && filteredJsonData !== "undefined") {
+          jsonData = filteredJsonData;
+        }
+        const matchingItems = jsonData.filter(item =>
+          `${item.food} (${item.country})`.toLowerCase().startsWith(val)
         );
+
         showDetails(matchingItems);
       }
     }
@@ -377,3 +344,44 @@ function sortResults() {
 
 // Add event listener to the sort button
 document.querySelector('.sort-container button').addEventListener('click', sortResults);
+
+/* Skapar landfiltreringsalternativen baserat på data i json*/
+function handleCountryDropdown(data){
+  const allCountries = [];
+  for (const country of data) {
+    if (!allCountries.includes(country)) {
+      allCountries.push(country);
+    }
+  }
+  const countrySelect = document.getElementById('countries');
+
+  for (const country of allCountries) {
+    var newOption = document.createElement('option');
+    newOption.value = country;
+    newOption.innerHTML = country;
+    countrySelect.appendChild(newOption);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('countries').addEventListener('input', handleSelect);
+})
+
+/* Filtrerar redan sökta resultat baserat på senaste sökningen */ 
+function handleSelect(ev){
+  let select = ev.target;
+  let selectedCountry = select.value;
+  if (allJsonData && allJsonData !== "null" && allJsonData !== "undefined") {
+    filteredJsonData = allJsonData;
+    if (!(selectedCountry === 'Country')) {
+      filteredJsonData = allJsonData.filter(item => `${item.food} (${item.country})`.includes(selectedCountry));
+    }
+    const resultContainer = document.querySelector('.result-container'); // Select result container
+    if (resultContainer.style.display && resultContainer.style.display !== "null" && resultContainer.style.display !== "undefined" && searchedValue !== "undefined"){
+      const matchingItems = filteredJsonData.filter(item =>
+        `${item.food} (${item.country})`.toLowerCase().includes(searchedValue)
+      );
+      showDetails(matchingItems);
+    }
+  }
+}
