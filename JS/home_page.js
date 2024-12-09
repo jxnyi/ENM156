@@ -46,7 +46,7 @@ function autocomplete(inp, fullData, arr) {
     listDiv.setAttribute('id', this.id + 'autocomplete-list');
     listDiv.setAttribute('class', 'autocomplete-items');
     this.parentNode.appendChild(listDiv);
-
+    
     filteredArr.forEach((item, index) => {
       if (item.toLowerCase().includes(val)) {
         const itemDiv = document.createElement('div');
@@ -141,11 +141,20 @@ function showDetails(items) {
     items.forEach(item => {
       const detailDiv = template.content.cloneNode(true);
 
+
+
       // Populate template with data
       detailDiv.querySelector('.food-name').textContent = item.food;
       detailDiv.querySelector('.food-country').textContent = item.country;
       detailDiv.querySelector('.food-raknebas').textContent = item.raknebas;
       detailDiv.querySelector('.food-carbon-output').textContent = item.carbonOutput;
+
+      // Position the black indicator based on CO2 output
+      const carbonOutput = parseFloat(item.carbonOutput);
+      const position = Math.min(1.5, Math.max(0, carbonOutput)) / 1.5 * 100;
+      const indicator = detailDiv.querySelector('.scale-indicator');
+      indicator.style.left = `${position}%`;  
+      
       resultContent.appendChild(detailDiv);
     });
     

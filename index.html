@@ -20,7 +20,7 @@
   </header>
 
   <h2>
-    <img src="logo.png" class="logo-img">
+    <img src="SustainaBiteLogo2.png" class="logo-img">
     SustainaBite</h2>
 
   <form autocomplete="off">
@@ -43,15 +43,24 @@
     <button type="button">▲▼</button>
   </div>
   <div id="result"></div>
-  <template id="result-template">
-    <div>
+<template id="result-template">
+  <div class="result-item" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+    <div class="text-container" style="flex: 1;">
       <h3 class="food-name"></h3>
       <p class="food-country"></p>
       <p class="food-raknebas"></p>
-      <p><strong>Carbon Output:</strong> <span class="food-carbon-output"></span> kg CO2e</p>
-      <hr />
+
     </div>
-  </template>
+    <div class="carbon-output-container" >
+      <!-- Carbon Output Text -->
+      <p><strong>Koldioxidutsläpp:</strong> <span class="food-carbon-output"></span> kg CO₂e</p>
+      <div class="scale-container">
+
+      <div class="scale-indicator"></div>
+    </div>
+  </div>
+</template>
+
 </div>
 
   <footer class="footer">
