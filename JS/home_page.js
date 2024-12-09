@@ -145,12 +145,12 @@ function autocomplete(inp, fullData, arr) {
     });
 }
 
-
 /* hämta och visa information för sökta livsmedlet */
 function showDetails(items) {
   const resultContainer = document.querySelector('.result-container'); // Select result container
   const resultContent = document.getElementById('result'); // Select the result content area
   const template = document.getElementById('result-template'); // Access the template
+
   ListDiv.style.display = 'none';
 
   resultContent.innerHTML = ''; // Clear previous results
@@ -180,6 +180,7 @@ function showDetails(items) {
       const carbonOutput = parseFloat(item.carbonOutput);
       const position = Math.min(1.5, Math.max(0, carbonOutput)) / 1.5 * 100;
       const indicator = detailDiv.querySelector('.scale-indicator');
+
       indicator.style.left = `${position}%`;
       
       resultContent.appendChild(detailDiv);
