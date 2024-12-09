@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="CSS/summary_page.css">
+  <script src="JS/summary_page.js"></script>
+  <style>h2 {text-align: center;}</style>
+  <title>Summary Page</title>
+</head>
+<body>
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="logo">SustainaBite</div>
+      <nav class="nav-links">
+        <a onclick= goToHome()>Hem</a>
+        <a href="omoss">Om Oss</a>
+      </nav>
+    </header>
+
+
+  <h2>Summary Page</h2> 
+
+  <div class="summaryList" id="summary-container">
+    <style>
+      table, th, td {
+        border:1px solid black;
+      }
+      </style>
+    <table id = 'summary-table'></table>
+    <thead>
+    <!-- <tr>
+      <th>Mat</th>
+      <th>Land</th>
+      <th>Utsläpp</th>
+      <th>Mängd</th>
+    </tr> -->
+    </thead>
+
+    <tbody>
+      <!--Detta görs automatiskt eller dynamiskt-->
+    </tbody>
+  </table>
+  
+  <div id="total-carbon-output">
+    <b>Totala Koldioxidutsläpp: </b> <span id="carbon-sum">0.00</span> kg CO2e/kg
+  </div>
+  </div>
+    
+  
+</body>
+</html>

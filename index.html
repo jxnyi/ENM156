@@ -14,7 +14,8 @@
   <header class="topbar">
     <div class="logo">SustainaBite</div>
     <nav class="nav-links">
-      <a href="index.html">Hem</a>
+      <a onclick= goToSummary()>Summering</a>
+      <a href="index.html">Hem</a>      // dubbelkolla
       <a href="omOss.html">Om Oss</a>
     </nav>
   </header>
@@ -43,25 +44,30 @@
     <button type="button">▲▼</button>
   </div>
   <div id="result"></div>
-<template id="result-template">
-  <div class="result-item" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-    <div class="text-container" style="flex: 1;">
-      <h3 class="food-name"></h3>
-      <p class="food-country"></p>
-      <p class="food-raknebas"></p>
-
+  <template id="result-template">
+    <div class="result-item" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+      <div class="text-container" style="flex: 1;">
+        <h3 class="food-name"></h3>
+        <p class="food-country"></p>
+        <p class="food-raknebas"></p>
+      </div>
+      <div class="carbon-output-container" >
+        <!-- Carbon Output Text -->
+        <p><strong>Koldioxidutsläpp:</strong> <span class="food-carbon-output"></span> kg CO₂e</p>
+        <div class="scale-container">
+  
+          <div class="scale-indicator"></div>
+        </div>
+      </div>
     </div>
-    <div class="carbon-output-container" >
-      <!-- Carbon Output Text -->
-      <p><strong>Koldioxidutsläpp:</strong> <span class="food-carbon-output"></span> kg CO₂e</p>
-      <div class="scale-container">
-
-      <div class="scale-indicator"></div>
-    </div>
-  </div>
-</template>
-
+  </template>
 </div>
+
+<div>
+  <button type="button" id="clearUserList" onclick="removeAllElementsUser()">Rensa</button> 
+  <div class="addedByUserListDiv" id="addedListDiv"></div>
+</div>
+
 
   <footer class="footer">
     <p>&copy; 2024 SustainaBite - Hållbara Val för Klimatet</p>

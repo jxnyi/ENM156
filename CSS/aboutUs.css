@@ -1,0 +1,21 @@
+p {
+    max-width: 500px;
+    text-align: center;
+    margin: auto;
+    margin-top: 0px;
+    margin-bottom: 20px;
+  }
+
+  .logo-img {
+    display: block;       
+    margin: 0 auto;        
+    width: 150px;           
+    height: auto;         
+    margin-bottom: 10px;   
+  }
+  
+  body{
+    background-image: url(Background1.png) ;
+    background-size: cover;
+    margin: auto;
+  }

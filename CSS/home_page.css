@@ -19,7 +19,7 @@ h2 {
   justify-content: center;
   align-items: center;
   margin: 0 auto;
- width: 100%; /* Take full width of the parent container */
+  width: 100%; /* Take full width of the parent container */
   max-width: 800px; /* Limit the width on larger screens */
   position: relative;
 }
@@ -81,6 +81,7 @@ h2 {
   color: #666666; /* Grey text */
   cursor: not-allowed; /* No pointer cursor */
 }
+
 
 
 /* Filtermenyn */
@@ -230,4 +231,84 @@ body {
   height: 100%;
   width: 2px;
   background-color: black;
+}
+
+.addButtons{
+  height:30px; 
+  width:80px; 
+  margin: -20px -50px; 
+  position:relative;
+  top:30px; 
+  left:85%;
+  border-radius: 10%;
+  background-color: #4CAF50;
+  color: white; 
+  font-size: 14px; 
+  font-weight: bold; 
+  text-align: center;
+  cursor: pointer;
+}
+
+.addedByUserListDiv{
+  position: relative;
+  top: 20px;
+  max-width: 500px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  display: none; 
+  margin: 0 auto;
+  border-radius: 15px;
+  width: 100%;
+  max-height: 400px; /* Maximum height for the results box */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
+}
+
+/*Elements in the list of food items added by user: 
+the class includes both the food item and its remove button. 
+*/
+.addedFoodItemDiv{
+  height: 50px;
+  position: relative;
+   
+}
+
+.removeButtons {
+  margin:0;
+  position: absolute;
+  top: 22%;
+  left: 93%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.breakLines{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#clearUserList {
+  position: relative; 
+  top:51px;
+  width:90px; 
+  height:30px;
+  left: 50%; 
+  transform: translateX(-50%); 
+  padding: 8px 16px;
+  background-color: #eb7f7f;
+  color: white; 
+  font-size: 14px; 
+  font-weight: bold; 
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 10; 
+}
+
+#clearUserList:hover {
+  background-color: #ff4c4c; 
 }
