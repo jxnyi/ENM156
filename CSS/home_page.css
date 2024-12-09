@@ -9,28 +9,105 @@ body {
 /* Loggans position */
 h2 {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 70px;
   margin-bottom: 20px;
 }
 
-/* Autocomplete-funktionen */
+/* Search bar */
 .autocomplete {
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  width: 500px;
+  width: 800px;
   position: relative;
 }
 
+/* Resultat boxen med livsmedelsinformation */
+.result-container {
+  width: 100%;        
+  max-width: 750px; 
+  margin: 0 auto;       
+  padding: 10px;        
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  max-height: 500px;
+  overflow-y: auto;
+  display: none;
+ 
+}
 
-/* Sökfältets utseende */
+
+.sort-container {
+  position: sticky; /* Keeps it fixed within the result box */
+  top: 0; /* Always stays at the top of the result box */
+  display: flex; /* Use flexbox */
+  justify-content: flex-end; /* Align the button to the right */
+}
+
+
+.sort-container button {
+  width: 20px;
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text */
+  padding: 10px 20px; /* Add padding for size */
+  font-size: 12px; /* Text size */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
+}
+
+/* Add hover effect */
+.sort-container button:hover {
+  background-color: #45a049; /* Slightly darker green */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Add active effect */
+.sort-container button:active {
+  background-color: #3e8e41; /* Even darker green */
+  transform: scale(0.95); /* Slightly shrink on click */
+}
+
+/* Optional: Disabled state */
+.sort-container button:disabled {
+  background-color: #cccccc; /* Grey background */
+  color: #666666; /* Grey text */
+  cursor: not-allowed; /* No pointer cursor */
+}
+
+
+/* Filtermenyn */
+select{
+  width: 100%; 
+  max-width: 200px; 
+  padding: 10px 1px 10px 40px; 
+  font-size: 16px;
+  border: 10px solid white;
+  border-radius: 30px;
+  background-color: #f1f1f1;
+  transition: border-radius 0.3s ease;
+  appearance: none;
+  outline: none;
+}
+
+/* Fiteralternativen */
+option{
+  background-color: white;
+}
+
+/* aktiv search bar - när användaren söker på något */
 input[type="search"] {
   width: 100%; 
-  max-width: 500px; 
+  max-width: 800px; 
   padding: 10px 10px 10px 40px; 
   font-size: 16px;
-  border: 1px solid #ccc;
+  border: 10px solid white;
   border-radius: 30px;
   background-color: #f1f1f1;
   transition: border-radius 0.3s ease;
@@ -46,7 +123,18 @@ input[type="search"].active {
 .search-icon {
   position: absolute; 
   top: 50%;           
-  left: 15px;        
+  left: 20px;        
+  transform: translateY(-50%); 
+  font-size: 20px;    
+  color: #888;       
+  pointer-events: none; 
+}
+
+/* Filtrets ikon på sidan */
+.filter-icon {
+  position: absolute; 
+  top: 50%;           
+  right: 160px;        
   transform: translateY(-50%); 
   font-size: 20px;    
   color: #888;       
@@ -104,21 +192,24 @@ input[type="search"].active {
 }
 */
 
-/* Resultat boxen med livsmedelsinformation */
-.result {
-  position: relative;
-  top: 20px;
-  max-width: 500px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
-  display: none;
-  margin: 0 auto;
-  border-radius: 15px;
-  width: 100%;
-  max-height: 400px; /* Maximum height for the results box */
-  overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Förhindrar sidscrollning */
+  box-sizing: border-box;
+  background-image:  url(pic2.png);
+  background-position: 0px,300px; /* Moves the image upwards */
+  background-size: cover; /* Ensures it covers the screen nicely */
 }
+
+.logo-img {
+  display: block;       
+  margin: 0 auto;        
+  width: 150px;           
+  height: auto;         
+  margin-bottom: 10px;   
+}
+
 
 .addButtons{
   height:30px; 
@@ -135,66 +226,6 @@ input[type="search"].active {
   text-align: center;
   cursor: pointer;
 }
-
-body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* Förhindrar sidscrollning */
-  box-sizing: border-box;
-}
-
-/* Topbar */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  width: 100%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-sizing: border-box;
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  padding: 5px 10px;
-  font-size: 16px;
-  border-radius: 15px;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.nav-links a:hover {
-  background-color: white;
-  color: #4CAF50;
-}
-
-
-html, body {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.footer {
-  margin-top: auto;
-  text-align: center;
-  padding: 20px;
-  background-color: #4CAF50;
-  color: white;
-  font-size: 14px;
-}
-
 
 .addedByUserListDiv{
   position: relative;

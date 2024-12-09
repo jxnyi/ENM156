@@ -22,19 +22,37 @@ async function fetchFoodData() {
     const response = await fetch('foods.json');
     if (!response.ok) throw new Error('Failed to fetch data');
     const data = await response.json();
+
+    allJsonData = data;
+
     const formattedData = data.map(item => `${item.food} (${item.country})`);
     autocomplete(document.getElementById('myInput'), data, formattedData);
     handleEnterKeySearch(document.getElementById('myInput'), data);
+
+    const countryData = data.map(item => `${item.country}`);        
+    handleCountryDropdown(countryData);               
+
   } catch (error) {
     console.error('Error:', error);
   }
 }
+
+
 
 /* autocomplete för sökfältet */
 function autocomplete(inp, fullData, arr) {
   let currentFocus;
   inp.addEventListener('input', function () {
     const val = this.value.toLowerCase();
+
+    const countryMenu = document.getElementById('countries');
+    const chosenCountry = countryMenu.value;
+    var filteredArr = arr;
+    
+    if (!(chosenCountry === 'Country')) {
+      filteredArr = arr.filter(entry => entry.includes(chosenCountry));
+    } 
+
     closeAllLists();
 
     if (!val) return false;
@@ -45,7 +63,7 @@ function autocomplete(inp, fullData, arr) {
     listDiv.setAttribute('class', 'autocomplete-items');
     this.parentNode.appendChild(listDiv);
 
-    arr.forEach((item, index) => {
+    filteredArr.forEach((item, index) => {
       if (item.toLowerCase().includes(val)) {
         const itemDiv = document.createElement('div');
         itemDiv.innerHTML = `<strong>${item.substr(0, val.length)}</strong>${item.substr(val.length)}`;
@@ -54,6 +72,7 @@ function autocomplete(inp, fullData, arr) {
           const selectedData = fullData.filter(
             foodItem => `${foodItem.food} (${foodItem.country})`.toLowerCase() === item.toLowerCase()
           );
+          searchedValue = item.toLowerCase();
           if (selectedData.length > 0) {
             showDetails(selectedData); // Display the results in the results box
           }
@@ -65,20 +84,19 @@ function autocomplete(inp, fullData, arr) {
     });
   });
 
-
   /* Funktionen lyssnar på när användaren börjar skriva i sökfältet */
   inp.addEventListener('keydown', function (e) {
     const list = document.getElementById(this.id + 'autocomplete-list');
     if (!list) return;
 
     let items = list.getElementsByTagName('div');
-    if (e.keyCode === 40) {
+    if (e.keyCode === 40) {           //arrowkey down
       currentFocus++;
       addActive(items);
-    } else if (e.keyCode === 38) {
+    } else if (e.keyCode === 38) {    //arrowkey up
       currentFocus--;
       addActive(items);
-    } else if (e.keyCode === 13) {
+    } else if (e.keyCode === 13) {    //enter
       e.preventDefault();
       if (currentFocus > -1) {
         items[currentFocus].click();
@@ -121,44 +139,81 @@ function autocomplete(inp, fullData, arr) {
       closeAllLists();
     }
     });
-
 }
 
-/* hämta och visa information för sökta livsmedlet, 
-also adds add buttons*/
+// /* hämta och visa information för sökta livsmedlet, 
+// also adds add buttons*/
+// function showDetails(items) {
+//   const ListDiv = document.getElementById("addedListDiv");
+//   ListDiv.style.display = 'none';
+
+//   const resultContainer = document.getElementById('result');
+//   resultContainer.innerHTML = ''; // Clear previous results
+
+//   if (items.length === 0) {
+//     resultContainer.innerHTML = '<p>Inga resultat hittades.</p>';
+//   } else {
+//     items.forEach(item => {
+//       const detailDiv = document.createElement('div');
+//       detailDiv.innerHTML = `
+//         <h3> ${item.food}</h3>
+//         <p> ${item.country}</p>
+//         <p> ${item.raknebas}</p>
+//         <p><strong>Carbon Output:</strong> ${item.carbonOutput} kg CO2e</p>
+//         <hr />
+//       `;
+//       const addButton = document.createElement('button');
+//       addButton.innerHTML = 'Lägg till';
+//       addButton.setAttribute("class","addButtons");
+//       addButton.setAttribute('id', 'addButton' + item.food + '.' + item.country);
+//       addButton.onclick = function(){addElementToList(addButton.getAttribute('id'))};
+//       resultContainer.appendChild(addButton);
+//       resultContainer.appendChild(detailDiv);
+//     });
+//   }
+
+//   resultContainer.style.display = 'block';
+//   updateVisibilityClearAllButton(); 
+// }
+
+/* hämta och visa information för sökta livsmedlet */
 function showDetails(items) {
-  const ListDiv = document.getElementById("addedListDiv");
+  const resultContainer = document.querySelector('.result-container'); // Select result container
+  const resultContent = document.getElementById('result'); // Select the result content area
+  const template = document.getElementById('result-template'); // Access the template
   ListDiv.style.display = 'none';
 
-  const resultContainer = document.getElementById('result');
-  resultContainer.innerHTML = ''; // Clear previous results
+  resultContent.innerHTML = ''; // Clear previous results
 
-  if (items.length === 0) {
-    resultContainer.innerHTML = '<p>Inga resultat hittades.</p>';
+  if (items.length === 0) {    
+    // No results, hide the container
+    resultContainer.style.display = 'none';
   } else {
+    // Show the container if there are results
     items.forEach(item => {
-      const detailDiv = document.createElement('div');
-      detailDiv.innerHTML = `
-        <h3> ${item.food}</h3>
-        <p> ${item.country}</p>
-        <p> ${item.raknebas}</p>
-        <p><strong>Carbon Output:</strong> ${item.carbonOutput} kg CO2e</p>
-        <hr />
-      `;
+      const detailDiv = template.content.cloneNode(true);
+
+      // Populate template with data
+      detailDiv.querySelector('.food-name').textContent = item.food;
+      detailDiv.querySelector('.food-country').textContent = item.country;
+      detailDiv.querySelector('.food-raknebas').textContent = item.raknebas;
+      detailDiv.querySelector('.food-carbon-output').textContent = item.carbonOutput;
+
       const addButton = document.createElement('button');
       addButton.innerHTML = 'Lägg till';
       addButton.setAttribute("class","addButtons");
       addButton.setAttribute('id', 'addButton' + item.food + '.' + item.country);
       addButton.onclick = function(){addElementToList(addButton.getAttribute('id'))};
-      resultContainer.appendChild(addButton);
-      resultContainer.appendChild(detailDiv);
+      resultContent.appendChild(addButton);
+      
+      resultContent.appendChild(detailDiv);
+
     });
+    
+    resultContainer.style.display = 'block'; // Ensure the container is visible
+    updateVisibilityClearAllButton(); 
   }
-
-  resultContainer.style.display = 'block';
-  updateVisibilityClearAllButton(); 
 }
-
 
 /* After clicking the add button the function will respond by adding 
 food item as a div to the container (addedByUserDivList) */
@@ -226,13 +281,33 @@ function goToSummary() {
   window.location.href="summary_page.html";
 }
 
+// /* Resultatboxen försvinner när man raderar all text från sökfältet */
+// function hideResultOnErase(inp, resultSection) {
+//   inp.addEventListener('input', function () {
+//     if (this.value.trim() === '') {
+//       resultSection.style.display = 'none';
+      
+//       //check if emply, if empty do nothing else show
+//       var elements = ListDiv.getElementsByClassName('addedFoodItemDiv');
+//       if (elements.length != 0) {
+//         ListDiv.style.display = 'block';
+//         updateVisibilityClearAllButton();
+//       }
+//     }
+//   });
+// }
+
 /* Resultatboxen försvinner när man raderar all text från sökfältet */
-function hideResultOnErase(inp, resultSection) {
+function hideResultOnErase(inp) {
+  const resultContainer = document.querySelector('.result-container'); // Select result container
+  const resultContent = document.getElementById('result'); // Select the result content area
+
   inp.addEventListener('input', function () {
     if (this.value.trim() === '') {
-      resultSection.style.display = 'none';
-      
-      //check if emply, if empty do nothing else show
+      resultContent.innerHTML = ''; // Clear results content
+      resultContainer.style.display = 'none'; // Hide the result container
+      searchedValue = "undefined"
+
       var elements = ListDiv.getElementsByClassName('addedFoodItemDiv');
       if (elements.length != 0) {
         ListDiv.style.display = 'block';
@@ -242,9 +317,10 @@ function hideResultOnErase(inp, resultSection) {
   });
 }
 
+
 function updateVisibilityClearAllButton() {
   const listDiv = document.getElementById('addedListDiv');
-  const clearButton = document.getElementById('clearUserList'); 
+  const clearButton = document.getElementById('clearUserList');
     if(listDiv.children.length > 0 && listDiv.style.display == 'block'){
       clearButton.style.display = 'block'; 
     } else {
@@ -275,3 +351,29 @@ fetchFoodData();
 const searchBar = document.getElementById('myInput');
 const resultSection = document.getElementById('result');
 hideResultOnErase(searchBar, resultSection);
+
+// Sorting function 
+let isAscending = true;
+
+// Function to sort and display the results
+function sortResults() {
+  const resultContent = document.getElementById('result');
+  const items = Array.from(resultContent.children);
+
+  // Sort items based on carbon output
+  items.sort((a, b) => {
+    const carbonA = parseFloat(a.querySelector('.food-carbon-output').textContent);
+    const carbonB = parseFloat(b.querySelector('.food-carbon-output').textContent);
+    return isAscending ? carbonA - carbonB : carbonB - carbonA;
+  });
+
+  // Clear existing results and append sorted items
+  resultContent.innerHTML = '';
+  items.forEach(item => resultContent.appendChild(item));
+
+  // Toggle the sort order for the next click
+  isAscending = !isAscending;
+}
+
+// Add event listener to the sort button
+document.querySelector('.sort-container button').addEventListener('click', sortResults);
