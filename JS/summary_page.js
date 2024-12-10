@@ -20,9 +20,10 @@ function fetchFoodData() {
                 )
             ); 
 
-            console.log('Filtered Data: ', filteredUserData); 
-            displayFilteredUserData(filteredUserData); 
+            // console.log('Filtered Data: ', filteredUserData); 
+            displayFilteredUserData(filteredUserData, data); 
             updateTotalCarbonOutput(filteredUserData);
+            // substitutionDropdown(filteredUserData, data);
         })
         .catch(error => {
             console.error('Error on summary page', error); 
@@ -32,12 +33,13 @@ function fetchFoodData() {
 
 // |Namn|Land|Utsläpp|[Input:kg eller liter knappup/knappner (defaultvalue 1kg)]|
 // Totala Utsläpp : - kg CO2e/kg (adjust vid ändringar)
-function displayFilteredUserData(filteredUserData) {
+function displayFilteredUserData(filteredUserData, fullData) {
     const summaryTable = document.getElementById('summary-table');
     var perKG = false;
  
     /*For each json row in json data*/
     filteredUserData.forEach(element => {
+        //console.log(filteredUserData);
 
         updateUserListForHomepage(element.food, element.country);
 
@@ -67,8 +69,29 @@ function displayFilteredUserData(filteredUserData) {
         else inputCell.innerHTML = 'liter: ';
         
         inputCellInput.addEventListener('input', () => updateTotalCarbonOutput()); 
-
         inputCell.appendChild(inputCellInput);
+
+        var substitutionCell = row.insertCell(4);
+        let substitutionCellContent = document.createElement('select');
+        substitutionCellContent.setAttribute('id',"selectSubstitution");
+
+        let substitutionDefualtOption = document.createElement('option');
+        substitutionDefualtOption.innerHTML = "Ersätt med...";
+        substitutionCellContent.appendChild(substitutionDefualtOption);
+        
+        const options = getSubstitutionOptions(element, fullData);
+
+        for (let option of options) {
+            // console.log('gello')
+            let substitutionCellOption = document.createElement('option'); 
+            substitutionCellOption.setAttribute('id',"optionSubstitution"); 
+            substitutionCellOption.innerHTML = option.food + ": " + option.carbonOutput + "kg CO₂e";
+            substitutionCellOption.value = option;
+            substitutionCellContent.appendChild(substitutionCellOption); 
+        }
+        substitutionCell.appendChild(substitutionCellContent);
+        
+
         
         
      });
@@ -78,6 +101,7 @@ function displayFilteredUserData(filteredUserData) {
         <th>Land</th>
         <th>Utsläpp</th>
         <th>Mängd</th>
+        <th>Ersättning</th>
     `;
 }
 
@@ -107,3 +131,33 @@ function goToHome() {
 
 
 fetchFoodData();
+
+//function updataDisplaySubstitution() {} TODO
+// userListSummary - remove old item, add new, grab new info from data, call displayFilteredUserData
+
+/* Gets the dropdown options for each food item in the summary list in ascending order */
+function getSubstitutionOptions(food, fullData) {
+    const options = fullData.filter(item => food.category === item.category);
+
+    // Sort options by carbonOutput in ascending order
+    const sortedOptions = [];
+    for (let option of options) {
+        if (!(option.food === food.food && option.country === food.country)) {
+            let inserted = false;
+            for (let i = 0; i < sortedOptions.length; i++) {
+                if (sortedOptions[i].carbonOutput > option.carbonOutput) {
+                    sortedOptions.splice(i, 0, option);
+                    inserted = true;
+                    break;
+                }
+            }
+            if (!inserted) {
+                // Add to the end if it's larger than all existing items
+                sortedOptions.push(option);
+            }
+        }
+    }
+
+    return sortedOptions;
+}
+
