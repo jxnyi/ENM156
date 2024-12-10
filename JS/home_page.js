@@ -170,7 +170,7 @@ function showDetails(items) {
       detailDiv.querySelector('.food-carbon-output').textContent = item.carbonOutput;
 
       const addButton = document.createElement('button');
-      addButton.innerHTML = 'Lägg till';
+      addButton.innerHTML = '+';
       addButton.setAttribute("class","addButtons");
       addButton.setAttribute('id', 'addButton' + item.food + '.' + item.country);
       addButton.onclick = function(){addElementToList(addButton.getAttribute('id'))};
@@ -206,7 +206,7 @@ function addElementToList(id) {
   foodItemDiv.innerHTML =  `<p> ${foodName.concat(" ", foodCountry)} </p>`//getFoodItemFromData(foodName,foodCountry, items); //TODO: 
   const removeButton = document.createElement('button');
   removeButton.setAttribute("class", "removeButtons")
-  removeButton.innerHTML = '❌';
+  removeButton.innerHTML = '×';
   const breakLine = document.createElement('hr');
   breakLine.setAttribute("class","breakLines")
   removeButton.onclick = function(){removeElementFromList(food)} // TODO: 
