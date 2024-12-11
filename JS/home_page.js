@@ -167,28 +167,31 @@ function showDetails(items) {
       detailDiv.querySelector('.food-raknebas').textContent = item.raknebas;
       detailDiv.querySelector('.food-carbon-output').textContent = item.carbonOutput;
 
-      const addButton = document.createElement('button');
-      addButton.innerHTML = '+';
-      addButton.setAttribute("class","addButtons");
-      addButton.setAttribute('id', 'addButton' + item.food + '.' + item.country);
-      addButton.onclick = function(){addElementToList(addButton.getAttribute('id'))};
-      resultContent.appendChild(addButton);
-
       // Position the black indicator based on CO2 output
       const carbonOutput = parseFloat(item.carbonOutput);
       const position = Math.min(1.5, Math.max(0, carbonOutput)) / 1.5 * 100;
       const indicator = detailDiv.querySelector('.scale-indicator');
-
       indicator.style.left = `${position}%`;
-      
-      resultContent.appendChild(detailDiv);
 
-    });
+      // Dynamically assign ID and onclick to the Add button
+      const addButton = detailDiv.querySelector('.addButtons');
+      addButton.id = `addButton${item.food}.${item.country}`;
+      addButton.addEventListener('click', () => {
+        addElementToList(addButton.id); // Function for handling Add button logic
+      });
     
+
+
+
+      // Add the detailDiv to the resultContent
+      resultContent.appendChild(detailDiv);
+    });
+
     resultContainer.style.display = 'block'; // Ensure the container is visible
     updateVisibilityClearAllButton(); 
   }
 }
+
 
 /* After clicking the add button the function will respond by adding 
 food item as a div to the container (addedByUserDivList) */
