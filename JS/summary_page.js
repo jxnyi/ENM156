@@ -43,9 +43,8 @@ function displayFilteredUserData() {
     var perKG = false;
  
     /*For each json row in json data*/
-    filteredUserData.forEach(element => {
+    filteredUserData.forEach((element,index) => {
         //console.log(filteredUserData);
-
         updateUserListForHomepage(element.food, element.country);
 
         //check to add right units to table
@@ -89,9 +88,9 @@ function displayFilteredUserData() {
         for (let option of options) {
             // console.log('gello')
             let substitutionCellOption = document.createElement('option'); 
-            substitutionCellOption.setAttribute('id',element.food+"."+element.country); // To be used within substitution function
+            substitutionCellOption.setAttribute('id',index); // To be used within substitution function
             substitutionCellOption.textContent = option.food + ": " + option.carbonOutput + "kg CO₂e";
-            substitutionCellOption.value = option.food +"."+option.country;
+            substitutionCellOption.value = option.food +"."+option.country;// To be used within substitution function
             substitutionCellContent.appendChild(substitutionCellOption); 
         }
         substitutionCellContent.addEventListener('input',updateDisplaySubstitution); 
@@ -154,17 +153,13 @@ function updateDisplaySubstitution() {
 
     // Entry that needs to be replaced 
     var toBeSubstituted = this.options[this.selectedIndex].id; 
-    j = toBeSubstituted.indexOf('.');
-    let foodNameToSub = toBeSubstituted.substr(0, j);
-    let foodCountryToSub = toBeSubstituted.substr(j+1); 
-    
+    let foodIndexToSub = parseInt(toBeSubstituted); 
+    //alert(foodNameToSub+".."+foodCountryToSub+".."+foodIndexToSub);
     for(let i = 0; i < filteredUserData.length; i++){
-        let foodNamesMatch = foodNameToSub === filteredUserData[i].food; 
-        let countryNamesMatch = foodCountryToSub === filteredUserData[i].country;
-        
-        if(foodNamesMatch && countryNamesMatch){
+        let indicesMatch = foodIndexToSub === i; 
+        //alert("I'm here");
+        if(indicesMatch ){
             filteredUserData.splice(i,1,substitutionItems[0]);
-            break;   // Necessary because if for example two items in the table and both same then change one of them 
         }
         
     }
