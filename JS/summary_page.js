@@ -74,9 +74,9 @@ function displayFilteredUserData(filteredUserData) {
      });
      var tableHeader = summaryTable.insertRow(0);
      tableHeader.innerHTML = `
-        <th>Mat</th>
+        <th>Ingrediens</th>
         <th>Land</th>
-        <th>Utsläpp</th>
+        <th>Koldioxidutsläpp</th>
         <th>Mängd</th>
     `;
 }

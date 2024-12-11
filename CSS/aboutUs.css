@@ -9,13 +9,16 @@ p {
   .logo-img {
     display: block;       
     margin: 0 auto;        
-    width: 150px;           
+    width: 100px;           
     height: auto;         
     margin-bottom: 10px;   
   }
   
-  body{
+  html, body{
     background-image: url(Background1.png) ;
     background-size: cover;
-    margin: auto;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
   }

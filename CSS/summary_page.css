@@ -2,19 +2,6 @@ body {
   font: 16px Arial;
 }
 
-#summary-table {
-  width: 100%;
-  text-align: center; 
-}
-
-.summaryList {
-  align-items: center;
-}
-
-#total-carbon-output {
-  margin: 2%
-}
-
 .topbar {
     display: flex;
     justify-content: space-between;
@@ -55,3 +42,94 @@ body {
     display: flex;
     flex-direction: column;
   }
+
+  main {
+    flex: 1; /* Allow the main section to grow */
+    padding: 50px 0; /* Add spacing for aesthetics */
+    overflow-y: auto; /* Enable scrolling if needed */
+    box-sizing: border-box;
+  }
+  
+  .footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #007004;
+    color: white;
+    height: 50px; /* Fixed height in pixels */
+    width: 100%;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed; /* Ensures it's always visible at the bottom */
+    bottom: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+/* General Table Container Styling */
+.summary-container {
+  width: 90%; /* Constrain the width */
+  max-width: 800px; /* Maximum width for larger screens */
+  margin: 20px auto; /* Center the container */
+  background: #fff; /* White background for clarity */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  overflow: hidden; /* Prevent overflow */
+  padding: 20px;
+}
+
+/* Table Styles */
+#summary-table {
+  width: 100%; /* Full width of the container */
+  border-collapse: collapse; /* Remove double borders */
+  text-align: left; /* Align text to the left */
+  font-size: 14px; /* Slightly smaller font size */
+  color: #333; /* Dark gray for readability */
+}
+
+/* Header Row */
+#summary-table th {
+  background-color: #007004; /* Green background for the header */
+  color: #fff; /* White text */
+  font-weight: bold;
+  text-transform: uppercase; /* Make headers uppercase */
+  padding: 12px 10px; /* Add spacing */
+}
+
+/* Table Rows */
+#summary-table td {
+  padding: 12px 10px; /* Add spacing inside cells */
+  border-bottom: 1px solid #ddd; /* Subtle gray divider between rows */
+}
+
+/* Zebra Stripes for Rows */
+#summary-table tr:nth-child(even) {
+  background-color: #f9f9f9; /* Light gray for even rows */
+}
+
+/* Hover Effect on Rows */
+#summary-table tr:hover {
+  background-color: #eef7ee; /* Light green highlight on hover */
+  transition: background-color 0.2s ease;
+}
+
+/* Total Carbon Output Styling */
+#total-carbon-output {
+  margin-top: 15px;
+  text-align: right;
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Small Screen Adjustments */
+@media (max-width: 768px) {
+  #summary-table th, #summary-table td {
+    font-size: 12px; /* Smaller font size for smaller screens */
+  }
+
+  .summary-container {
+    width: 100%; /* Use full width */
+    padding: 10px; /* Less padding */
+  }
+}

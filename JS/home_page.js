@@ -20,6 +20,38 @@ window.onload = (event => {
   }
 })
 
+window.addEventListener('DOMContentLoaded', () => {
+  const savedList = JSON.parse(sessionStorage.getItem('userList')) || [];
+  const parentListDiv = document.getElementById('addedListDiv');
+
+  // Re-add items to the list on the homepage
+  savedList.forEach(item => {
+    const foodItemDiv = document.createElement('div');
+    foodItemDiv.setAttribute('class', 'addedFoodItemDiv');
+    foodItemDiv.setAttribute('id', `${item.foodName}.${item.foodCountry}`);
+    foodItemDiv.innerHTML = `<p>${item.foodName} ${item.foodCountry}</p>`;
+    
+    // Create and append the remove button
+    const removeButton = document.createElement('button');
+    removeButton.setAttribute('class', 'removeButtons');
+    removeButton.textContent = '×';
+    removeButton.onclick = function () {
+      foodItemDiv.remove();
+      updateVisibilityClearAllButton();
+    };
+    foodItemDiv.appendChild(removeButton);
+    
+    parentListDiv.appendChild(foodItemDiv);
+  });
+
+  // Show the list div if there are items
+  if (savedList.length > 0) {
+    ListDiv.style.display = 'block';
+  }
+
+  updateVisibilityClearAllButton();
+});
+
 /* Hämtar data från foods.json */
 async function fetchFoodData() {
   try {
@@ -238,26 +270,56 @@ function removeElementFromList(id) {
 
 /* Functionality for rensa-allt button */
 function removeAllElementsUser() {
+  const parentListDiv = document.getElementById('addedListDiv');
+  
+  // Remove only dynamically added items (keep the "Rensa" button intact)
+  const foodItems = parentListDiv.querySelectorAll('.addedFoodItemDiv');
+  foodItems.forEach(item => item.remove());
 
-  const parentListDiv = document.getElementById('addedListDiv'); 
-  parentListDiv.innerHTML = "";
-  ListDiv.style.display = 'none'
-  const clearButton = document.getElementById('clearUserList');
-  clearButton.style.display = 'none'; 
+  // If no items remain, hide the summary list
+  if (parentListDiv.getElementsByClassName('addedFoodItemDiv').length === 0) {
+    ListDiv.style.display = 'none';
+  }
+
+  // Clear sessionStorage related to user-added items
+  sessionStorage.removeItem('userList'); // Clear the data only explicitly on "Rensa"
+
+  updateVisibilityClearAllButton();
 }
+
 
 /* Upon clicking the Go to Summary button, user will be taken to summary page  */
 function goToSummary() {
+  // Prepare the user list from current items
+  const userList = [];
   for (const element of ListDiv.getElementsByClassName('addedFoodItemDiv')) {
-    const foodCountry = element.getAttribute('id'); 
-    i = foodCountry.indexOf('.');
-    let name = foodCountry.substr(0, i);
-    let country = foodCountry.substr(i+1);
-    userList.push({foodName:name, foodCountry:country});
+    const foodCountry = element.getAttribute('id');
+    const i = foodCountry.indexOf('.');
+    const name = foodCountry.substr(0, i);
+    const country = foodCountry.substr(i + 1);
+    userList.push({ foodName: name, foodCountry: country });
   }
-  
+
+  // Store user list in sessionStorage
   sessionStorage.setItem('userList', JSON.stringify(userList));
-  window.location.href="summary_page.html";
+
+  // Redirect to summary page
+  window.location.href = "summary_page.html";
+}
+
+function goToAboutUsPage() {
+  // Prepare the user list from current items
+  const userList = [];
+  const foodItems = document.getElementsByClassName('addedFoodItemDiv');
+  for (const item of foodItems) {
+    const foodCountry = item.getAttribute('id');
+    const [name, country] = foodCountry.split('.');
+    userList.push({ foodName: name, foodCountry: country });
+  }
+  sessionStorage.setItem('userList', JSON.stringify(userList));
+
+  // Navigate to the Om Oss page
+  window.location.href = "omOss.html";
 }
 
 
