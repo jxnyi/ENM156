@@ -66,8 +66,9 @@ h2 {
   
   .footer {
     margin-top: auto;
+    height: 50px;
+    padding-top: 4px;
     text-align: center;
-    padding: 1%;
     background-color: #007004;
     color: white;
     font-size: 14px;

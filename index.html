@@ -41,8 +41,9 @@
 
 <div class="result-container">
   <div class="sort-container">
-    <button type="button">▲▼</button>
+    <button type="button" id="sortButton">▲▼</button>
   </div>
+  
   <div id="result"></div>
   <template id="result-template">
     <div class="result-item" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -63,19 +64,14 @@
   </template>
 </div>
 
-
 <div class="addedByUserListDiv" id="addedListDiv">
   <!-- Dynamically added items will appear here -->
-
 </div>
+<button type="button" id="clearUserList" onclick="removeAllElementsUser()">Rensa</button>
 
-
-  <button type="button" id="clearUserList" onclick="removeAllElementsUser()">Rensa</button>
-
-
-  <footer class="footer">
-    <p>&copy; 2024 SustainaBite - Hållbara Val för Klimatet</p>
-  </footer>
+<footer class="footer">
+  <p>&copy; 2024 SustainaBite - Hållbara Val för Klimatet</p>
+</footer>
   
   <script src="JS/home_page.js"></script>
 </body>

@@ -33,7 +33,7 @@ h2 {
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 15px;
-  max-height: 500px;
+  max-height: 281px;
   overflow-y: auto;
   display: none;
   background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent (90% opacity) */
@@ -270,16 +270,15 @@ body {
   position: absolute; /* Keeps the list in a fixed position on the screen */
   top: 47px;
   right: 0px; /* 20px away from the right edge of the screen */
-  width: 200px; /* Set a maximum width for the list */
-  height: 450px;
+  width: 250px; /* Set a maximum width for the list */
+  height: 570px;
   padding: 10px; /* Add padding for content spacing */
   border: 1px solid #ccc; /* Add a border for visibility */
   background-color: #f9f9f9; /* Light background color */
   display: block; /* Ensure it's visible */
   border-radius: 15px 0px 0px 0px; /* Rounded corners */
-  max-height: 90vh; /* Limit height to 80% of the viewport */
   overflow-y: auto; /* Enable vertical scrolling if content overflows */
-  z-index: 5; /* Ensure it appears above other content */
+  z-index: 100; /* Ensure it appears above other content */
 }
 
 /*Elements in the list of food items added by user: 
@@ -341,34 +340,28 @@ the class includes both the food item and its remove button.
   margin-bottom: 10px;
 }
 
-
 #clearUserList {
-  position: relative; 
-  top:130px;
-  width:90px; 
-  height:30px;
-  left: 600px; 
-  transform: translateX(-50%); 
-  margin-top: 10px; /* Add space between the last item and the button */
-  background-color: #4CAF50;
-  color: white; 
-  font-size: 14px; 
-  font-weight: bold; 
-  text-align: center;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  z-index: 50; 
+  position: fixed; /* Fixes the button to the viewport */
+  bottom: 50px;    /* Distance from the bottom of the viewport */
+  right: 0px;     /* Distance from the right of the viewport */
+  width: 250px;     /* Fixed width */
+  height: 30px;    /* Fixed height */
+  background-color: #4CAF50; /* Green background */
+  color: white;    /* White text */
+  font-size: 14px; /* Text size */
+  font-weight: bold; /* Bold text */
+  text-align: center; /* Center the text */
+  border: none;      /* Remove border */
+  cursor: pointer;    /* Pointer cursor on hover */
+  z-index: 1000;      /* Ensure it appears above other content */
 }
 
 /* Add hover effect */
 #clearUserList:hover {
-  background-color:#3e8e41; /* Slightly darker green */
-
+  background-color: #3e8e41; /* Slightly darker green */
 }
 
 /* Add active effect */
 #clearUserList:active {
   background-color: #007004; /* Even darker green */
-
 }

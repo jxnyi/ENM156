@@ -151,8 +151,6 @@ function showDetails(items) {
   const resultContent = document.getElementById('result'); // Select the result content area
   const template = document.getElementById('result-template'); // Access the template
 
-  ListDiv.style.display = 'none';
-
   resultContent.innerHTML = ''; // Clear previous results
 
   if (items.length === 0) {    
@@ -218,6 +216,7 @@ function addElementToList(id) {
   const foodItem = document.getElementById(food)
   if(!(ListDiv.contains(foodItem))){
     ListDiv.appendChild(foodItemDiv); 
+    ListDiv.style.display = 'block';
   }
   updateVisibilityClearAllButton();
 }
@@ -277,6 +276,7 @@ function hideResultOnErase(inp) {
       }
     }
   });
+  
 }
 
 
@@ -320,19 +320,17 @@ const searchBar = document.getElementById('myInput');
 const resultSection = document.getElementById('result');
 hideResultOnErase(searchBar, resultSection);
 
-// Sorting function 
-let isAscending = true;
+let isAscending = true; // Global toggle for sorting order
 
-// Function to sort and display the results
 function sortResults() {
-  const resultContent = document.getElementById('result');
-  const items = Array.from(resultContent.children);
+  const resultContent = document.getElementById('result'); // Container for results
+  const items = Array.from(resultContent.children); // Convert HTMLCollection to an array
 
   // Sort items based on carbon output
   items.sort((a, b) => {
-    const carbonA = parseFloat(a.querySelector('.food-carbon-output').textContent);
-    const carbonB = parseFloat(b.querySelector('.food-carbon-output').textContent);
-    return isAscending ? carbonA - carbonB : carbonB - carbonA;
+    const carbonA = parseFloat(a.querySelector('.food-carbon-output').textContent) || 0;
+    const carbonB = parseFloat(b.querySelector('.food-carbon-output').textContent) || 0;
+    return isAscending ? carbonA - carbonB : carbonB - carbonA; // Ascending or Descending
   });
 
   // Clear existing results and append sorted items
