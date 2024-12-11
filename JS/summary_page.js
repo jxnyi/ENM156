@@ -1,9 +1,13 @@
 const userListSummary = JSON.parse(sessionStorage.getItem('userList'))
 const listForHomePage = []; 
 
+let filteredUserData = []; 
+let fullData = []; 
+
 function updateUserListForHomepage(foodName,foodCountry){
     listForHomePage.push('summary!!' + foodName + '.' + foodCountry);
-} 
+} ; 
+
 
 function fetchFoodData() {
     fetch('./foods.json')
@@ -14,7 +18,8 @@ function fetchFoodData() {
             return response.json();
         })
         .then(data => {
-            const filteredUserData = data.filter(item =>
+            fullData = data;
+             filteredUserData = data.filter(item =>
                 userListSummary.some(filter => 
                     filter.foodName === item.food && filter.foodCountry === item.country
                 )
@@ -33,7 +38,7 @@ function fetchFoodData() {
 
 // |Namn|Land|Utsläpp|[Input:kg eller liter knappup/knappner (defaultvalue 1kg)]|
 // Totala Utsläpp : - kg CO2e/kg (adjust vid ändringar)
-function displayFilteredUserData(filteredUserData, fullData) {
+function displayFilteredUserData() {
     const summaryTable = document.getElementById('summary-table');
     var perKG = false;
  
@@ -76,7 +81,7 @@ function displayFilteredUserData(filteredUserData, fullData) {
         substitutionCellContent.setAttribute('id',"selectSubstitution");
 
         let substitutionDefualtOption = document.createElement('option');
-        substitutionDefualtOption.innerHTML = "Ersätt med...";
+        substitutionDefualtOption.textContent = "Ersätt med...";
         substitutionCellContent.appendChild(substitutionDefualtOption);
         
         const options = getSubstitutionOptions(element, fullData);
@@ -84,11 +89,12 @@ function displayFilteredUserData(filteredUserData, fullData) {
         for (let option of options) {
             // console.log('gello')
             let substitutionCellOption = document.createElement('option'); 
-            substitutionCellOption.setAttribute('id',"optionSubstitution"); 
-            substitutionCellOption.innerHTML = option.food + ": " + option.carbonOutput + "kg CO₂e";
-            substitutionCellOption.value = option;
+            substitutionCellOption.setAttribute('id',element.food+"."+element.country); // To be used within substitution function
+            substitutionCellOption.textContent = option.food + ": " + option.carbonOutput + "kg CO₂e";
+            substitutionCellOption.value = option.food +"."+option.country;
             substitutionCellContent.appendChild(substitutionCellOption); 
         }
+        substitutionCellContent.addEventListener('input',updateDisplaySubstitution); 
         substitutionCell.appendChild(substitutionCellContent);
         
 
@@ -133,6 +139,43 @@ function goToHome() {
 fetchFoodData();
 
 //function updataDisplaySubstitution() {} TODO
+function updateDisplaySubstitution() {
+    let sumTable = document.getElementById("summary-table"); 
+
+    // Entry that will replace the current row
+    var optionValueSubstitute = this.options[this.selectedIndex].value;
+    i = optionValueSubstitute.indexOf('.');
+    let foodName = optionValueSubstitute.substr(0, i);
+    let foodCountry = optionValueSubstitute.substr(i+1); 
+
+    let substitutionItems = fullData.filter((entry) => {
+      return  (entry.food === foodName && entry.country === foodCountry);  
+    }); 
+
+    // Entry that needs to be replaced 
+    var toBeSubstituted = this.options[this.selectedIndex].id; 
+    j = toBeSubstituted.indexOf('.');
+    let foodNameToSub = toBeSubstituted.substr(0, j);
+    let foodCountryToSub = toBeSubstituted.substr(j+1); 
+    
+    for(let i = 0; i < filteredUserData.length; i++){
+        let foodNamesMatch = foodNameToSub === filteredUserData[i].food; 
+        let countryNamesMatch = foodCountryToSub === filteredUserData[i].country;
+        
+        if(foodNamesMatch && countryNamesMatch){
+            filteredUserData.splice(i,1,substitutionItems[0]);
+            break;   // Necessary because if for example two items in the table and both same then change one of them 
+        }
+        
+    }
+ 
+    listForHomePage.length = 0; // Empty and then repopulate the list to be sent back to home page to match the current filterdUserData 
+    sumTable.innerHTML = ""; 
+    displayFilteredUserData(); 
+    updateTotalCarbonOutput(filteredUserData);
+
+
+}
 // userListSummary - remove old item, add new, grab new info from data, call displayFilteredUserData
 
 /* Gets the dropdown options for each food item in the summary list in ascending order */
