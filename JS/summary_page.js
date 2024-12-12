@@ -1,5 +1,6 @@
 const userListSummary = JSON.parse(sessionStorage.getItem('userList'))
-const listForHomePage = []; 
+const listForHomePage = [];
+// const listForTODO = [];
 
 let filteredUserData = []; 
 let fullData = []; 
@@ -199,3 +200,11 @@ function getSubstitutionOptions(food, fullData) {
     return sortedOptions;
 }
 
+// function makeListForTODO(foodName, foodCountry, foodAmount) {
+//     listForTODO.push({name: foodName, country: foodCountry});//, amount: foodAmount});
+// }
+
+function goToTODO() {
+    sessionStorage.setItem('TODOlist', JSON.stringify(filteredUserData));
+    window.location.href="todo_page.html";
+}
