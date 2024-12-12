@@ -8,7 +8,7 @@ function createList(listFromSummary) {
 
         var itemText = item.name + " (" + item.country + "), " + item.amount;
         var text = document.createTextNode(itemText);
-        li.addEventListener('click', function(ev) {
+        li.addEventListener('click', function() {
             this.classList.toggle('done');
         }); 
         li.appendChild(text);

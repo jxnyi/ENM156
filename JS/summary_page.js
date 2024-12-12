@@ -180,9 +180,8 @@ function updateDisplaySubstitution() {
     listForHomePage.length = 0; // Empty and then repopulate the list to be sent back to home page to match the current filterdUserData 
     sumTable.innerHTML = ""; 
     displayFilteredUserData(); 
-    updateTotalCarbonOutput(filteredUserData);
-
-
+    updateTotalCarbonOutput();
+    makeListForTODO();
 }
 // userListSummary - remove old item, add new, grab new info from data, call displayFilteredUserData
 
@@ -213,6 +212,9 @@ function getSubstitutionOptions(food, fullData) {
 }
 
 function makeListForTODO() {
+    //clear list first
+    listForTODO.length = 0;
+
     for (var item of filteredUserData) {
         perKG = item.raknebas.includes("kg");
         const unit = perKG ? " kg":" L";
