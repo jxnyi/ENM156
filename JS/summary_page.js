@@ -1,6 +1,6 @@
 const userListSummary = JSON.parse(sessionStorage.getItem('userList'))
 const listForHomePage = [];
-// const listForTODO = [];
+const listForTODO = [];
 
 let filteredUserData = []; 
 let fullData = []; 
@@ -29,6 +29,7 @@ function fetchFoodData() {
             // console.log('Filtered Data: ', filteredUserData); 
             displayFilteredUserData(filteredUserData, data); 
             updateTotalCarbonOutput(filteredUserData);
+            makeListForTODO();
             // substitutionDropdown(filteredUserData, data);
         })
         .catch(error => {
@@ -66,7 +67,7 @@ function displayFilteredUserData() {
         var inputCell = row.insertCell(3);
         let inputCellInput = document.createElement('input');
         inputCellInput.setAttribute('class', 'cellInputs');
-        inputCellInput.setAttribute('id', element.carbonOutput);
+        inputCellInput.setAttribute('id', element.food + "!" + element.country + ";" + element.carbonOutput);
         inputCellInput.type = 'number';
         inputCellInput.value = 1
 
@@ -119,12 +120,23 @@ function updateTotalCarbonOutput() {
     const cellInputs = document.getElementsByClassName('cellInputs');
     let totalCarbonOutput = 0;
 
-    for (let inputField of cellInputs) {    
-        let carbonOutput = Number.parseFloat(inputField.getAttribute('id'));
+    for (let inputField of cellInputs) {  
+        const foodString = inputField.getAttribute('id');
+        const i = foodString.indexOf('!');
+        const foodName = foodString.substring(0, i);
+        const j = foodString.indexOf(';');
+        const foodCountry = foodString.substring(i+1, j);
+
+        // console.log(foodString);
+        console.log(foodName);
+        
+        let carbonOutput = Number.parseFloat(foodString.substring(j+1));
         let amount = parseFloat(inputField.value);
 
         if (amount === 0) carbonOutput = -1 * carbonOutput; //for subtraction
         totalCarbonOutput += amount * carbonOutput;
+
+        updateListForTODO(foodName, foodCountry, amount);
     }
 
     tableCarbonSum.textContent = totalCarbonOutput.toFixed(1);
@@ -200,11 +212,30 @@ function getSubstitutionOptions(food, fullData) {
     return sortedOptions;
 }
 
-// function makeListForTODO(foodName, foodCountry, foodAmount) {
-//     listForTODO.push({name: foodName, country: foodCountry});//, amount: foodAmount});
-// }
+function makeListForTODO() {
+    for (var item of filteredUserData) {
+        perKG = item.raknebas.includes("kg");
+        const unit = perKG ? " kg":" L";
+
+        if (!listForTODO.includes({name:item.food, country:item.country, amount: 1})) {
+            listForTODO.push({name: item.food, country: item.country, amount: 1 + unit});
+        }
+    }
+    // console.log(listForTODO);
+}
+
+function updateListForTODO(foodName, foodCountry, foodAmount) {
+    for (var item of listForTODO) {
+        perKG = item.amount.includes("kg");
+        const unit = perKG ? " kg":" L";
+
+        if (foodName === item.name && foodCountry === item.country) {
+            item.amount = foodAmount + unit;
+        }
+    }
+}
 
 function goToTODO() {
-    sessionStorage.setItem('TODOlist', JSON.stringify(filteredUserData));
+    sessionStorage.setItem('TODOlist', JSON.stringify(listForTODO));
     window.location.href="todo_page.html";
 }
