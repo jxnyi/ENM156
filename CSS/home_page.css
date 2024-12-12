@@ -24,6 +24,26 @@ h2 {
   position: relative;
 }
 
+.delButton {
+  position: absolute; 
+  z-index: 1;
+  top: 50%;
+  top: 334px;           
+  left: 1485px;        
+  transform: translateY(-50%);
+  width: 100%;        
+  max-width: 10px; 
+  margin: 0 auto;       
+  padding: 10px;        
+  box-sizing: border-box;
+  border: 5px solid white;
+  border-radius: 15px;
+  max-height: 1px;
+  overflow-y: auto;
+  display: none;
+  background-color: #f1f1f1;
+}
+
 /* Resultat boxen med livsmedelsinformation */
 .result-container {
   width: 100%;        
@@ -141,6 +161,19 @@ input[type="search"].active {
   font-size: 20px;    
   color: #888;       
   pointer-events: none; 
+}
+
+.delText-icon {
+  position: absolute; 
+  z-index: 2;
+  top: 50%;           
+  top: 335px;           
+  left: 1490px;       
+  transform: translateY(-50%); 
+  font-size: 20px;    
+  color:#ff4c4c;       
+  pointer-events: none; 
+  display: none;
 }
 
 /*Rullistan på förslag */

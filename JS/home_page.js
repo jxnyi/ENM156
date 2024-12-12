@@ -1,6 +1,9 @@
 //constant (container for list of elements added by user)
 const ListDiv = document.getElementById("addedListDiv");
 ListDiv.style.display = 'none';
+const eraseButton = document.getElementById("delButton");
+const eraseButtonSymbol = document.getElementById("delButtonSymbol");
+
 const userList = []; 
 
 var allJsonData;
@@ -48,18 +51,25 @@ function autocomplete(inp, fullData, arr) {
   let currentFocus;
   inp.addEventListener('input', function () {
     const val = this.value.toLowerCase();
+    const valueFilteredData = fullData.filter(
+      foodItem => `${foodItem.food}`.toLowerCase().includes(val)
+    );
+    const formattedFilteredData = valueFilteredData.map(item => `${item.food} (${item.country})`);
 
     const countryMenu = document.getElementById('countries');
     const chosenCountry = countryMenu.value;
-    var filteredArr = arr;
+    var filteredArr = formattedFilteredData;
     
     if (!(chosenCountry === 'Country')) {
-      filteredArr = arr.filter(entry => entry.includes(chosenCountry));
+      filteredArr = formattedFilteredData.filter(entry => entry.includes(chosenCountry));
     } 
 
     closeAllLists();
 
     if (!val) return false;
+
+    eraseButton.style.display = 'block';
+    eraseButtonSymbol.style.display = 'block';
 
     currentFocus = -1;
     const listDiv = document.createElement('div');
@@ -68,23 +78,21 @@ function autocomplete(inp, fullData, arr) {
     this.parentNode.appendChild(listDiv);
     
     filteredArr.forEach((item, index) => {
-      if (item.toLowerCase().includes(val)) {
-        const itemDiv = document.createElement('div');
-        itemDiv.innerHTML = `<strong>${item.substr(0, val.length)}</strong>${item.substr(val.length)}`;
-        itemDiv.addEventListener('click', function () {
-          inp.value = item;
-          const selectedData = fullData.filter(
-            foodItem => `${foodItem.food} (${foodItem.country})`.toLowerCase() === item.toLowerCase()
-          );
-          searchedValue = item.toLowerCase();
-          if (selectedData.length > 0) {
-            showDetails(selectedData); // Display the results in the results box
-          }
+      const itemDiv = document.createElement('div');
+      itemDiv.innerHTML = `<strong>${item.substr(0, val.length)}</strong>${item.substr(val.length)}`;
+      itemDiv.addEventListener('click', function () {
+        inp.value = item;
+        const selectedData = fullData.filter(
+          foodItem => `${foodItem.food} (${foodItem.country})`.toLowerCase() === item.toLowerCase()
+        );
+        searchedValue = item.toLowerCase();
+        if (selectedData.length > 0) {
+          showDetails(selectedData); // Display the results in the results box
+        }
           
-          closeAllLists();
-        });
-        listDiv.appendChild(itemDiv);
-      }
+        closeAllLists();
+      });
+      listDiv.appendChild(itemDiv);
     });
   });
 
@@ -188,6 +196,7 @@ function showDetails(items) {
     });
     
     resultContainer.style.display = 'block'; // Ensure the container is visible
+    resultContainer.scrollTop = 0;
     updateVisibilityClearAllButton(); 
   }
 }
@@ -266,9 +275,12 @@ function hideResultOnErase(inp) {
 
   inp.addEventListener('input', function () {
     if (this.value.trim() === '') {
+      eraseButton.style.display = 'none';
+      eraseButtonSymbol.style.display = 'none';
+
       resultContent.innerHTML = ''; // Clear results content
       resultContainer.style.display = 'none'; // Hide the result container
-      searchedValue = "undefined"
+      searchedValue = "undefined";
 
       var elements = ListDiv.getElementsByClassName('addedFoodItemDiv');
       if (elements.length != 0) {
@@ -303,7 +315,7 @@ function handleEnterKeySearch(inp, fullData) {
           jsonData = filteredJsonData;
         }
         const matchingItems = jsonData.filter(item =>
-          `${item.food} (${item.country})`.toLowerCase().startsWith(val)
+          `${item.food})`.toLowerCase().includes(val)
         );
 
         showDetails(matchingItems);
@@ -380,9 +392,28 @@ function handleSelect(ev){
     const resultContainer = document.querySelector('.result-container'); // Select result container
     if (resultContainer.style.display && resultContainer.style.display !== "null" && resultContainer.style.display !== "undefined" && searchedValue !== "undefined"){
       const matchingItems = filteredJsonData.filter(item =>
-        `${item.food} (${item.country})`.toLowerCase().includes(searchedValue)
+        `${item.food})`.toLowerCase().includes(searchedValue)
       );
       showDetails(matchingItems);
     }
   }
 }
+
+function eraseButtonPress(){
+  const resultContainer = document.querySelector('.result-container'); // Select result container
+  const resultContent = document.getElementById('result'); // Select the result content area
+
+  document.getElementById('myInput').value = "";
+  resultContent.innerHTML = ''; // Clear results content
+  resultContainer.style.display = 'none'; // Hide the result container
+  searchedValue = "undefined";
+
+  var elements = ListDiv.getElementsByClassName('addedFoodItemDiv');
+  if (elements.length != 0) {
+    ListDiv.style.display = 'block';
+    updateVisibilityClearAllButton();
+  }
+
+  eraseButton.style.display = 'none';
+  eraseButtonSymbol.style.display = 'none';
+};
