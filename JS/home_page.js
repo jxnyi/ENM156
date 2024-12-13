@@ -8,20 +8,43 @@ var filteredJsonData;
 var searchedValue = "undefined";
 
 // const testingList = ["summary!!Kikärter.Kanada","summary!!Nötkött.Brasilien"];
-window.onload = (event => {
-  const listFromSummary = JSON.parse(sessionStorage.getItem('listFromSummary'));
+// window.onload = (event => {
+  // const listFromSummary = JSON.parse(sessionStorage.getItem('listFromSummary'));
+  // console.log(listFromSummary);
+
   
-  if (listFromSummary != null && listFromSummary.length >= 1) {
-    for (let element of listFromSummary) {
-      addElementToList(element);
-    }
-    ListDiv.style.display = 'block';
-    updateVisibilityClearAllButton();
-  }
-})
+  // if (listFromSummary != null && listFromSummary.length >= 1) {
+  //   for (let element of listFromSummary) {
+  //     addElementToList(element);
+  //   }
+  //   ListDiv.style.display = 'block';
+  //   updateVisibilityClearAllButton();
+  // }
+// })
 
 window.addEventListener('DOMContentLoaded', () => {
-  const savedList = JSON.parse(sessionStorage.getItem('userList')) || [];
+  const summaryFlag = JSON.parse(sessionStorage.getItem('comingFromSummaryPage'));
+  let savedList = [];
+
+  if (summaryFlag) {
+    sessionStorage.setItem('comingFromSummaryPage', false);
+    userList.length = 0;
+    listFromSummary = JSON.parse(sessionStorage.getItem('listFromSummary'));
+    for (let foodString of listFromSummary) {
+      const food = foodString.substr(9);
+      i = food.indexOf('.');
+      let name = food.substr(0, i);
+      let country = food.substr(i+1);
+
+      userList.push({foodName: name, foodCountry: country});
+      
+    }
+    sessionStorage.setItem('userList', JSON.stringify(userList));
+
+  } //else {
+    savedList = JSON.parse(sessionStorage.getItem('userList')) || [];
+  // }
+  // const savedList = JSON.parse(sessionStorage.getItem('userList')) || [];
   const parentListDiv = document.getElementById('addedListDiv');
 
   // Re-add items to the list on the homepage
@@ -241,6 +264,7 @@ function showDetails(items) {
 /* After clicking the add button the function will respond by adding 
 food item as a div to the container (addedByUserDivList) */
 function addElementToList(id) {
+  console.log("addelement to list");
   const food = id.substr(9);
   i = food.indexOf('.');
   let foodName = food.substr(0, i);
@@ -342,6 +366,7 @@ function goToSummary() {
 
   // Store user list in sessionStorage
   sessionStorage.setItem('userList', JSON.stringify(userList));
+  sessionStorage.setItem('comingFromHomePage', true);
 
   // Redirect to summary page
   window.location.href = "summary_page.html";

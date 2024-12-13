@@ -69,7 +69,7 @@ body {
 /* General Table Container Styling */
 .summary-container {
   width: 90%; /* Constrain the width */
-  max-width: 800px; /* Maximum width for larger screens */
+  max-width: 900px; /* Maximum width for larger screens */
   margin: 20px auto; /* Center the container */
   background: #fff; /* White background for clarity */
   border-radius: 10px; /* Rounded corners */
@@ -132,4 +132,8 @@ body {
     width: 100%; /* Use full width */
     padding: 10px; /* Less padding */
   }
+}
+
+.selectSubstitutionClass {
+  width:270px; 
 }
