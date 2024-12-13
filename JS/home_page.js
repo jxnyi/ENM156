@@ -20,6 +20,38 @@ window.onload = (event => {
   }
 })
 
+window.addEventListener('DOMContentLoaded', () => {
+  const savedList = JSON.parse(sessionStorage.getItem('userList')) || [];
+  const parentListDiv = document.getElementById('addedListDiv');
+
+  // Re-add items to the list on the homepage
+  savedList.forEach(item => {
+    const foodItemDiv = document.createElement('div');
+    foodItemDiv.setAttribute('class', 'addedFoodItemDiv');
+    foodItemDiv.setAttribute('id', `${item.foodName}.${item.foodCountry}`);
+    foodItemDiv.innerHTML = `<p>${item.foodName} ${item.foodCountry}</p>`;
+    
+    // Create and append the remove button
+    const removeButton = document.createElement('button');
+    removeButton.setAttribute('class', 'removeButtons');
+    removeButton.textContent = '×';
+    removeButton.onclick = function () {
+      foodItemDiv.remove();
+      updateVisibilityClearAllButton();
+    };
+    foodItemDiv.appendChild(removeButton);
+    
+    parentListDiv.appendChild(foodItemDiv);
+  });
+
+  // Show the list div if there are items
+  if (savedList.length > 0) {
+    ListDiv.style.display = 'block';
+  }
+
+  updateVisibilityClearAllButton();
+});
+
 /* Hämtar data från foods.json */
 async function fetchFoodData() {
   try {
@@ -151,8 +183,6 @@ function showDetails(items) {
   const resultContent = document.getElementById('result'); // Select the result content area
   const template = document.getElementById('result-template'); // Access the template
 
-  ListDiv.style.display = 'none';
-
   resultContent.innerHTML = ''; // Clear previous results
 
   if (items.length === 0) {    
@@ -169,28 +199,31 @@ function showDetails(items) {
       detailDiv.querySelector('.food-raknebas').textContent = item.raknebas;
       detailDiv.querySelector('.food-carbon-output').textContent = item.carbonOutput;
 
-      const addButton = document.createElement('button');
-      addButton.innerHTML = 'Lägg till';
-      addButton.setAttribute("class","addButtons");
-      addButton.setAttribute('id', 'addButton' + item.food + '.' + item.country);
-      addButton.onclick = function(){addElementToList(addButton.getAttribute('id'))};
-      resultContent.appendChild(addButton);
-
       // Position the black indicator based on CO2 output
       const carbonOutput = parseFloat(item.carbonOutput);
       const position = Math.min(1.5, Math.max(0, carbonOutput)) / 1.5 * 100;
       const indicator = detailDiv.querySelector('.scale-indicator');
-
       indicator.style.left = `${position}%`;
-      
-      resultContent.appendChild(detailDiv);
 
-    });
+      // Dynamically assign ID and onclick to the Add button
+      const addButton = detailDiv.querySelector('.addButtons');
+      addButton.id = `addButton${item.food}.${item.country}`;
+      addButton.addEventListener('click', () => {
+        addElementToList(addButton.id); // Function for handling Add button logic
+      });
     
+
+
+
+      // Add the detailDiv to the resultContent
+      resultContent.appendChild(detailDiv);
+    });
+
     resultContainer.style.display = 'block'; // Ensure the container is visible
     updateVisibilityClearAllButton(); 
   }
 }
+
 
 /* After clicking the add button the function will respond by adding 
 food item as a div to the container (addedByUserDivList) */
@@ -206,7 +239,7 @@ function addElementToList(id) {
   foodItemDiv.innerHTML =  `<p> ${foodName.concat(" ", foodCountry)} </p>`//getFoodItemFromData(foodName,foodCountry, items); //TODO: 
   const removeButton = document.createElement('button');
   removeButton.setAttribute("class", "removeButtons")
-  removeButton.innerHTML = '❌';
+  removeButton.innerHTML = '×';
   const breakLine = document.createElement('hr');
   breakLine.setAttribute("class","breakLines")
   removeButton.onclick = function(){removeElementFromList(food)} // TODO: 
@@ -218,6 +251,7 @@ function addElementToList(id) {
   const foodItem = document.getElementById(food)
   if(!(ListDiv.contains(foodItem))){
     ListDiv.appendChild(foodItemDiv); 
+    ListDiv.style.display = 'block';
   }
   updateVisibilityClearAllButton();
 }
@@ -236,26 +270,56 @@ function removeElementFromList(id) {
 
 /* Functionality for rensa-allt button */
 function removeAllElementsUser() {
+  const parentListDiv = document.getElementById('addedListDiv');
+  
+  // Remove only dynamically added items (keep the "Rensa" button intact)
+  const foodItems = parentListDiv.querySelectorAll('.addedFoodItemDiv');
+  foodItems.forEach(item => item.remove());
 
-  const parentListDiv = document.getElementById('addedListDiv'); 
-  parentListDiv.innerHTML = "";
-  ListDiv.style.display = 'none'
-  const clearButton = document.getElementById('clearUserList');
-  clearButton.style.display = 'none'; 
+  // If no items remain, hide the summary list
+  if (parentListDiv.getElementsByClassName('addedFoodItemDiv').length === 0) {
+    ListDiv.style.display = 'none';
+  }
+
+  // Clear sessionStorage related to user-added items
+  sessionStorage.removeItem('userList'); // Clear the data only explicitly on "Rensa"
+
+  updateVisibilityClearAllButton();
 }
+
 
 /* Upon clicking the Go to Summary button, user will be taken to summary page  */
 function goToSummary() {
+  // Prepare the user list from current items
+  const userList = [];
   for (const element of ListDiv.getElementsByClassName('addedFoodItemDiv')) {
-    const foodCountry = element.getAttribute('id'); 
-    i = foodCountry.indexOf('.');
-    let name = foodCountry.substr(0, i);
-    let country = foodCountry.substr(i+1);
-    userList.push({foodName:name, foodCountry:country});
+    const foodCountry = element.getAttribute('id');
+    const i = foodCountry.indexOf('.');
+    const name = foodCountry.substr(0, i);
+    const country = foodCountry.substr(i + 1);
+    userList.push({ foodName: name, foodCountry: country });
   }
-  
+
+  // Store user list in sessionStorage
   sessionStorage.setItem('userList', JSON.stringify(userList));
-  window.location.href="summary_page.html";
+
+  // Redirect to summary page
+  window.location.href = "summary_page.html";
+}
+
+function goToAboutUsPage() {
+  // Prepare the user list from current items
+  const userList = [];
+  const foodItems = document.getElementsByClassName('addedFoodItemDiv');
+  for (const item of foodItems) {
+    const foodCountry = item.getAttribute('id');
+    const [name, country] = foodCountry.split('.');
+    userList.push({ foodName: name, foodCountry: country });
+  }
+  sessionStorage.setItem('userList', JSON.stringify(userList));
+
+  // Navigate to the Om Oss page
+  window.location.href = "omOss.html";
 }
 
 
@@ -277,6 +341,7 @@ function hideResultOnErase(inp) {
       }
     }
   });
+  
 }
 
 
@@ -320,19 +385,17 @@ const searchBar = document.getElementById('myInput');
 const resultSection = document.getElementById('result');
 hideResultOnErase(searchBar, resultSection);
 
-// Sorting function 
-let isAscending = true;
+let isAscending = true; // Global toggle for sorting order
 
-// Function to sort and display the results
 function sortResults() {
-  const resultContent = document.getElementById('result');
-  const items = Array.from(resultContent.children);
+  const resultContent = document.getElementById('result'); // Container for results
+  const items = Array.from(resultContent.children); // Convert HTMLCollection to an array
 
   // Sort items based on carbon output
   items.sort((a, b) => {
-    const carbonA = parseFloat(a.querySelector('.food-carbon-output').textContent);
-    const carbonB = parseFloat(b.querySelector('.food-carbon-output').textContent);
-    return isAscending ? carbonA - carbonB : carbonB - carbonA;
+    const carbonA = parseFloat(a.querySelector('.food-carbon-output').textContent) || 0;
+    const carbonB = parseFloat(b.querySelector('.food-carbon-output').textContent) || 0;
+    return isAscending ? carbonA - carbonB : carbonB - carbonA; // Ascending or Descending
   });
 
   // Clear existing results and append sorted items

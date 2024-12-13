@@ -19,19 +19,21 @@ h2 {
 
 
 .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #007004;
-    color: white;
-    width: 100%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: relative;
-    top: 0;
-    z-index: 1000;
-    box-sizing: border-box;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #007004;
+  color: white;
+  height: 60px; /* Fixed height in pixels */
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Ensures it's always visible at the top */
+  top: 0;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
   
   .logo {
     display: flex;
@@ -65,11 +67,17 @@ h2 {
   }
   
   .footer {
-    margin-top: auto;
-    text-align: center;
-    padding: 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
     background-color: #007004;
     color: white;
-    font-size: 14px;
-  }
-
+    height: 50px; /* Fixed height in pixels */
+    width: 100%;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed; /* Ensures it's always visible at the bottom */
+    bottom: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+}

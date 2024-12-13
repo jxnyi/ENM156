@@ -33,7 +33,7 @@ h2 {
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 15px;
-  max-height: 500px;
+  max-height: 281px;
   overflow-y: auto;
   display: none;
   background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent (90% opacity) */
@@ -45,12 +45,13 @@ h2 {
   top: 0; /* Always stays at the top of the result box */
   display: flex; /* Use flexbox */
   justify-content: flex-end; /* Align the button to the right */
+  z-index: 98;
 }
 
 
 .sort-container button {
   width: 20px;
-  background-color: #007004; /* Green background */
+  background-color: #45a049; /* Green background */
   color: white; /* White text */
   padding: 10px 20px; /* Add padding for size */
   font-size: 12px; /* Text size */
@@ -61,17 +62,18 @@ h2 {
   justify-content: center; /* Center content horizontally */
   align-items: center; /* Center content vertically */
   transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
+  z-index: 99;
 }
 
 /* Add hover effect */
 .sort-container button:hover {
-  background-color: #45a049; /* Slightly darker green */
+  background-color:#3e8e41; /* Slightly darker green */
   transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
 /* Add active effect */
 .sort-container button:active {
-  background-color: #3e8e41; /* Even darker green */
+  background-color: #007004; /* Even darker green */
   transform: scale(0.95); /* Slightly shrink on click */
 }
 
@@ -216,7 +218,7 @@ body {
   width: 150px;
   height: 20px; /* Adjust height to fit the text above the scale */
   background: linear-gradient(to right, green, yellow, orange, red);
-  border-radius: 10px;
+  border-radius: 1px;
   position: relative;
   display: flex;
   flex-direction: column; /* Stack the text above the scale */
@@ -235,80 +237,115 @@ body {
 
 .addButtons{
   height:30px; 
-  width:80px; 
-  margin: -20px -50px; 
+  width:30px; 
+  top: -25px;
+  left: 170px;
   position:relative;
-  top:30px; 
-  left:85%;
-  border-radius: 10%;
+  border-radius: 50%;
+  border: none;
   background-color: #4CAF50;
   color: white; 
   font-size: 14px; 
   font-weight: bold; 
   text-align: center;
   cursor: pointer;
+  z-index: 10;
 }
 
-.addedByUserListDiv{
-  position: relative;
-  top: 20px;
-  max-width: 500px;
+/* Add hover effect */
+.addButtons:hover {
+  background-color:#3e8e41; /* Slightly darker green */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Add active effect */
+.addButtons:active {
+  background-color: #007004; /* Even darker green */
+  transform: scale(0.95); /* Slightly shrink on click */
+}
+
+
+.addedByUserListDiv {
+  position: absolute;
+  top: 60px; /* Assume the topbar is 10% of the viewport height */
+  bottom: 50px; /* Assume the footer is 7% of the viewport height */
+  right: 0;
+  width: 250px; /* Fixed width */
   padding: 10px;
   border: 1px solid #ccc;
   background-color: #f9f9f9;
-  display: none; 
-  margin: 0 auto;
-  border-radius: 15px;
-  width: 100%;
-  max-height: 400px; /* Maximum height for the results box */
-  overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
+  border-radius: 15px 0px 0px 15px;
+  overflow-y: auto; /* Enable scrolling for overflowing content */
+  z-index: 999;
+  box-sizing: border-box; /* Include padding/border in dimensions */
+}
+
+#clearUserList {
+  position: sticky; /* Keeps the button pinned to the top */
+  left: 0;
+  width: 100%; /* Full width of the container */
+  height: 40px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1; /* Ensure it stays above the scrollable content */
 }
 
 /*Elements in the list of food items added by user: 
 the class includes both the food item and its remove button. 
 */
-.addedFoodItemDiv{
-  height: 50px;
-  position: relative;
-   
+.addedFoodItemDiv {
+  padding: 10px; /* Add padding around each item */
+  border-bottom: 1px solid #ccc; /* Separate items with a line */
+  display: flex; /* Flexbox for layout */
+  justify-content: space-between; /* Space out content and remove button */
+  align-items: center; /* Align items to the top if there's wrapping text */
+  width: 100%; /* Ensure the content takes the full width of the container */
+  box-sizing: border-box; /* Include padding and borders in the width calculation */
+  word-wrap: break-word; /* Allow long words to break and wrap to the next line */
+  overflow: hidden; /* Prevent overflow of long content */
+  white-space: normal; /* Allow the text to wrap to the next line */
 }
 
+/* Ensure the text container doesn't overlap with the remove button */
+.addedFoodItemDiv p {
+  margin-bottom: 10px; 
+  flex: 1; /* Allow the paragraph to take up available space */
+  word-wrap: break-word; /* Ensure long words wrap to the next line */
+  
+}
+
+
+
+/* ---------JUSTERA "TA BORT" (X) KNAPPEN SOM LIGGER I SUMMARY LIST -----------*/
 .removeButtons {
-  margin:0;
-  position: absolute;
-  top: 22%;
-  left: 93%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  margin-left: 1px; /* Add spacing from the text */
+  flex-shrink: 0; /* Prevent the button from resizing */
+  width: 30px; /* Button width */
+  height: 30px; /* Button height */
+  border-radius: 50%; /* Make the button circular */
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text */
+  border: none; /* Remove border */
+  cursor: pointer; /* Pointer cursor on hover */
+  display: flex; /* Flexbox for centering */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
 }
 
-.breakLines{
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  margin-bottom: 10px;
+/* Add hover effect */
+.removeButtons:hover {
+  background-color:#3e8e41; /* Slightly darker green */
 }
 
-#clearUserList {
-  position: relative; 
-  top:51px;
-  width:90px; 
-  height:30px;
-  left: 50%; 
-  transform: translateX(-50%); 
-  padding: 8px 16px;
-  background-color: #eb7f7f;
-  color: white; 
-  font-size: 14px; 
-  font-weight: bold; 
-  text-align: center;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  z-index: 10; 
+/* Add active effect */
+.removeButtons:active {
+  background-color: #007004; /* Even darker green */
 }
 
-#clearUserList:hover {
-  background-color: #ff4c4c; 
-}
+/* --------------------------------------------------------------------*/
