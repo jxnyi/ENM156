@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="CSS/topbar.css">
   <link rel="icon" type="image/x-icon" href="logobar.png">
   <title>SustainaBite</title>
+  <link rel="icon" href="SustainaBiteLogo.png" type="image/x-icon">
 </head>
 <body>
 
@@ -17,7 +18,7 @@
     <nav class="nav-links">
       <a href="index.html">Hem</a>
       <a onclick= goToSummary()>Summering</a>
-      <a href="omOss.html">Om Oss</a>
+      <a onclick="goToAboutUsPage()">Om Oss</a>
     </nav>
   </header>
 
@@ -40,10 +41,11 @@
   </form>
 
 
-<div class="result-container">
-  <div class="sort-container">
-    <button type="button">▲▼</button>
+  <div class="result-container">
+    <div class="sort-container">
+    <button type="button" id="sortButton">▲▼</button>
   </div>
+  
   <div id="result"></div>
   <template id="result-template">
     <div class="result-item" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -59,21 +61,23 @@
   
           <div class="scale-indicator"></div>
         </div>
+        <button class="addButtons">+</button>
       </div>
     </div>
   </template>
 </div>
 
-<div>
-  <button type="button" id="clearUserList" onclick="removeAllElementsUser()">Rensa</button> 
-  <div class="addedByUserListDiv" id="addedListDiv"></div>
+<div class="addedByUserListDiv" id="addedListDiv">
+  <div id="addedItemsContainer">
+    <!-- Dynamically added items will appear here -->
+  </div>
+  <button type="button" id="clearUserList" onclick="removeAllElementsUser()">Rensa</button>
 </div>
 
-
-  <footer class="footer">
-    <p>&copy; 2024 SustainaBite - Hållbara Val för Klimatet</p>
-  </footer>
+<footer class="footer">
+  <p>&copy; 2024 SustainaBite - Hållbara Val för Klimatet</p>
+</footer>
   
-  <script src="JS/home_page.js"></script>
+<script src="JS/home_page.js"></script>
 </body>
 </html>
