@@ -137,3 +137,9 @@ body {
 .selectSubstitutionClass {
   width:270px; 
 }
+
+.nav-links a {
+  cursor: pointer; /* Change cursor to pointer */
+  text-decoration: none; /* Remove underline for a cleaner look */
+  color: inherit; /* Maintain the current text color */
+}

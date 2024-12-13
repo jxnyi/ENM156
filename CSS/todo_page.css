@@ -85,6 +85,12 @@ ul li.done {
   text-decoration: line-through;
 }
 
+.nav-links a {
+  cursor: pointer; /* Change cursor to pointer */
+  text-decoration: none; /* Remove underline for a cleaner look */
+  color: inherit; /* Maintain the current text color */
+}
+
 /* Add a checkmark when clicked on */
 /* ul li.done::before {
   content: '';
