@@ -1,77 +1,100 @@
 body {
-    font: 16px Arial;
-  }
+  font: 16px Arial;
+}
+
+main {
+  flex: 1; /* Allow the main section to grow */
+  padding: 50px 0; /* Add spacing for aesthetics */
+  overflow-y: auto; /* Enable scrolling if needed */
+  box-sizing: border-box;
+}
 
 .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #007004;
-    color: white;
-    width: 100%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-sizing: border-box;
-  }
-  
-  .logo {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .nav-links a {
-    color: white;
-    text-decoration: none;
-    padding: 5px 10px;
-    font-size: 16px;
-    border-radius: 15px;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .nav-links a:hover {
-    background-color: white;
-    color: #4CAF50;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #007004;
+  color: white;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-sizing: border-box;
+}
 
-  html, body {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-  }
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
 
-  ul li {
-    cursor: pointer;
-    position: relative;
-    padding: 12px 8px 12px 40px;
-    margin-right: 40px;
-    list-style-type: none;
-    background: #eee;
-  }
-  
-  ul li:hover {
-    background: #ddd;
-  }
-  
-  ul li.done {
-    background: #888;
-    color: #fff;
-    text-decoration: line-through;
-  }
-  
-  /* Add a checkmark when clicked on */
-  ul li.done::before {
-    content: '';
-    position: absolute;
-    border-color: #fff;
-    border-style: solid;
-    border-width: 0 2px 2px 0;
-    top: 10px;
-    left: 16px;
-    transform: rotate(45deg);
-    height: 15px;
-    width: 7px;
-  }
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 15px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-links a:hover {
+  background-color: white;
+  color: #4CAF50;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+ul{
+  width: 90%; /* Constrain the width */
+  max-width: 800px; /* Maximum width for larger screens */
+  margin: 20px auto; /* Center the container */
+  background: #fff; /* White background for clarity */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  overflow: hidden; /* Prevent overflow */
+  padding: 20px;
+}
+ul li {
+  cursor: pointer;
+  position: relative;
+  padding: 12px 0px 12px 10px;
+  /* margin-right: 40px; */
+  list-style-type: none;
+  background: #eee;
+
+}
+
+ul li:hover {
+  background-color: #eef7ee; /* Light green highlight on hover */
+  transition: background-color 0.2s ease;
+}
+
+ul li:nth-child(even) {
+  background-color: #f9f9f9; /* Light gray for even rows */
+}
+
+ul li.done {
+  background: #4CAF50;
+  color: #fff;
+  text-decoration: line-through;
+}
+
+/* Add a checkmark when clicked on */
+/* ul li.done::before {
+  content: '';
+  position: absolute;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+} */

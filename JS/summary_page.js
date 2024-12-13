@@ -1,13 +1,40 @@
-const userListSummary = JSON.parse(sessionStorage.getItem('userList'))
+var userListSummary = [];
 const listForHomePage = [];
 const listForTODO = [];
 
 let filteredUserData = []; 
 let fullData = []; 
 
-function updateUserListForHomepage(foodName,foodCountry){
+window.onload = (_ => {
+    let flag = JSON.parse(sessionStorage.getItem('comingFromHomePage'));
+    // console.log(flag);
+
+    if(flag){
+        userListSummary = JSON.parse(sessionStorage.getItem('userList'))
+    } else {
+        userListSummary = JSON.parse(sessionStorage.getItem('listFromTODO'))
+    }
+});
+
+function updateUserListForHomepage(foodName, foodCountry){
     listForHomePage.push('summary!!' + foodName + '.' + foodCountry);
-} ; 
+} 
+// function removefromUserListForHomepage(name, country) {
+//     for (var j = 0; j < listForHomePage.length; j++) {
+//         const food = listForHomePage[j].substr(9);
+//         i = food.indexOf('.');
+//         let foodName = food.substr(0, i);
+//         let foodCountry = food.substr(i+1);
+
+        
+//         if (foodName === name && foodCountry === country) {
+//             console.log('Before: '+listForHomePage);
+//             listForHomePage.splice(j, 1);
+//             console.log(listForHomePage);
+//             break;
+//         }
+//     }
+// }
 
 
 function fetchFoodData() {
@@ -27,8 +54,8 @@ function fetchFoodData() {
             ); 
 
             // console.log('Filtered Data: ', filteredUserData); 
-            displayFilteredUserData(filteredUserData, data); 
-            updateTotalCarbonOutput(filteredUserData);
+            displayFilteredUserData(); 
+            updateTotalCarbonOutput();
             makeListForTODO();
             // substitutionDropdown(filteredUserData, data);
         })
@@ -61,8 +88,8 @@ function displayFilteredUserData() {
         countryCell.innerHTML = element.country;
         
         var carbonOutputCell = row.insertCell(2);
-        if (perKG) carbonOutputCell.innerHTML = element.carbonOutput;
-        else carbonOutputCell.innerHTML = element.carbonOutput;
+        if (perKG) carbonOutputCell.innerHTML = element.carbonOutput + "/kg";
+        else carbonOutputCell.innerHTML = element.carbonOutput + "/l";
         
         var inputCell = row.insertCell(3);
         let inputCellInput = document.createElement('input');
@@ -79,6 +106,7 @@ function displayFilteredUserData() {
 
         var substitutionCell = row.insertCell(4);
         let substitutionCellContent = document.createElement('select');
+        substitutionCellContent.setAttribute('class',"selectSubstitutionClass");
         substitutionCellContent.setAttribute('id',"selectSubstitution");
 
         let substitutionDefualtOption = document.createElement('option');
@@ -128,7 +156,7 @@ function updateTotalCarbonOutput() {
         const foodCountry = foodString.substring(i+1, j);
 
         // console.log(foodString);
-        console.log(foodName);
+        // console.log(foodName);
         
         let carbonOutput = Number.parseFloat(foodString.substring(j+1));
         let amount = parseFloat(inputField.value);
@@ -144,6 +172,7 @@ function updateTotalCarbonOutput() {
 
 function goToHome() {
     sessionStorage.setItem('listFromSummary', JSON.stringify(listForHomePage));
+    sessionStorage.setItem('comingFromSummaryPage', true);
     window.location.href="index.html";
 }
 
@@ -172,14 +201,19 @@ function updateDisplaySubstitution() {
         let indicesMatch = foodIndexToSub === i; 
         //alert("I'm here");
         if(indicesMatch ){
+            //removefromUserListForHomepage(filteredUserData[i].food, filteredUserData[i].country);
             filteredUserData.splice(i,1,substitutionItems[0]);
         }
         
     }
  
+    console.log('Before: '+listForHomePage);
+
     listForHomePage.length = 0; // Empty and then repopulate the list to be sent back to home page to match the current filterdUserData 
     sumTable.innerHTML = ""; 
     displayFilteredUserData(); 
+    console.log(listForHomePage);
+
     updateTotalCarbonOutput();
     makeListForTODO();
 }
@@ -219,8 +253,8 @@ function makeListForTODO() {
         perKG = item.raknebas.includes("kg");
         const unit = perKG ? " kg":" L";
 
-        if (!listForTODO.includes({name:item.food, country:item.country, amount: 1})) {
-            listForTODO.push({name: item.food, country: item.country, amount: 1 + unit});
+        if (!listForTODO.includes({foodName:item.food, foodCountry:item.country, amount: 1})) {
+            listForTODO.push({foodName: item.food, foodCountry: item.country, amount: 1 + unit});
         }
     }
     // console.log(listForTODO);
@@ -232,7 +266,7 @@ function updateListForTODO(foodName, foodCountry, foodAmount) {
         perKG = item.amount.includes("kg");
         const unit = perKG ? " kg":" L";
 
-        if (foodName === item.name && foodCountry === item.country) {
+        if (foodName === item.foodName && foodCountry === item.foodCountry) {
             item.amount = foodAmount + unit;
         }
     }

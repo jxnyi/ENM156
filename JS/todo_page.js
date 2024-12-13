@@ -1,3 +1,4 @@
+var listFromSummary = [];
 
 //create the TO-DO list
 function createList(listFromSummary) {
@@ -7,11 +8,17 @@ function createList(listFromSummary) {
     for (const item of listFromSummary) {
         var li = document.createElement("li");
 
-        var itemText = item.name + " (" + item.country + "), " + item.amount;
+        var itemText = item.foodName + " (" + item.foodCountry + "), " + item.amount;
         var text = document.createTextNode(itemText);
-        li.addEventListener('click', function() {
-            this.classList.toggle('done');
+
+        var box = document.createElement('input');
+        box.setAttribute('type', "checkbox");
+        box.setAttribute('id', 'checkbox');
+
+        box.addEventListener('click', function(ev) {
+            ev.target.parentNode.classList.toggle('done');
         }); 
+        li.appendChild(box);
         li.appendChild(text);
 
         TODOlist.appendChild(li);
@@ -19,6 +26,13 @@ function createList(listFromSummary) {
 }
 
 window.onload = (_ => {
-    const listFromSummary = JSON.parse(sessionStorage.getItem('TODOlist'))
+    listFromSummary = JSON.parse(sessionStorage.getItem('TODOlist'))
     createList(listFromSummary);
 });
+
+function goToSummary() {
+    sessionStorage.setItem('listFromTODO', JSON.stringify(listFromSummary));
+    sessionStorage.setItem('comingFromHomePage', false);
+
+    window.location.href = "summary_page.html";
+}
