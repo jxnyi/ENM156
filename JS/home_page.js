@@ -7,21 +7,6 @@ var allJsonData;
 var filteredJsonData;
 var searchedValue = "undefined";
 
-// const testingList = ["summary!!Kikärter.Kanada","summary!!Nötkött.Brasilien"];
-// window.onload = (event => {
-  // const listFromSummary = JSON.parse(sessionStorage.getItem('listFromSummary'));
-  // console.log(listFromSummary);
-
-  
-  // if (listFromSummary != null && listFromSummary.length >= 1) {
-  //   for (let element of listFromSummary) {
-  //     addElementToList(element);
-  //   }
-  //   ListDiv.style.display = 'block';
-  //   updateVisibilityClearAllButton();
-  // }
-// })
-
 window.addEventListener('DOMContentLoaded', () => {
   const summaryFlag = JSON.parse(sessionStorage.getItem('comingFromSummaryPage'));
   let savedList = [];
@@ -298,7 +283,6 @@ function addElementToList(id) {
   removeButton.onclick = function(){removeElementFromList(food)} // TODO: 
   foodItemDiv.appendChild(removeButton);
   foodItemDiv.appendChild(breakLine);
-  // console.log(foodItemDiv.innerHTML);
 
   // Prevent from adding duplicates
   const foodItem = document.getElementById(food)

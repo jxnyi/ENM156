@@ -7,7 +7,6 @@ let fullData = [];
 
 window.onload = (_ => {
     let flag = JSON.parse(sessionStorage.getItem('comingFromHomePage'));
-    // console.log(flag);
 
     if(flag){
         userListSummary = JSON.parse(sessionStorage.getItem('userList'))
@@ -18,23 +17,7 @@ window.onload = (_ => {
 
 function updateUserListForHomepage(foodName, foodCountry){
     listForHomePage.push('summary!!' + foodName + '.' + foodCountry);
-} 
-// function removefromUserListForHomepage(name, country) {
-//     for (var j = 0; j < listForHomePage.length; j++) {
-//         const food = listForHomePage[j].substr(9);
-//         i = food.indexOf('.');
-//         let foodName = food.substr(0, i);
-//         let foodCountry = food.substr(i+1);
-
-        
-//         if (foodName === name && foodCountry === country) {
-//             console.log('Before: '+listForHomePage);
-//             listForHomePage.splice(j, 1);
-//             console.log(listForHomePage);
-//             break;
-//         }
-//     }
-// }
+}
 
 
 function fetchFoodData() {
@@ -99,7 +82,7 @@ function displayFilteredUserData() {
         inputCellInput.value = 1
 
         if (perKG) inputCell.innerHTML = 'kg: ';
-        else inputCell.innerHTML = 'liter: ';
+        else inputCell.innerHTML = 'l: ';
         
         inputCellInput.addEventListener('input', () => updateTotalCarbonOutput()); 
         inputCell.appendChild(inputCellInput);
