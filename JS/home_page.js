@@ -297,6 +297,33 @@ function removeAllElementsUser() {
   updateVisibilityClearAllButton();
 }
 
+// Ensure the list is always visible initially
+window.addEventListener('DOMContentLoaded', () => {
+  const addedListDiv = document.getElementById('addedListDiv');
+  const toggleButton = document.getElementById('toggleListButton');
+
+  addedListDiv.style.right = '0px'; // Ensure list is shown initially
+  toggleButton.textContent = '→'; // Button shows right arrow initially
+});
+
+// Function to toggle the visibility of the added list
+function toggleAddedList() {
+  const addedListDiv = document.getElementById('addedListDiv');
+  const toggleButton = document.getElementById('toggleListButton');
+
+  if (addedListDiv.style.right === '-250px') {
+    // Show the list
+    addedListDiv.style.right = '0';
+    toggleButton.textContent = '→'; // Change button text to right arrow
+  } else {
+    // Hide the list
+    addedListDiv.style.right = '-250px';
+    toggleButton.textContent = '←'; // Change button text to left arrow
+  }
+}
+
+
+
 
 /* Upon clicking the Go to Summary button, user will be taken to summary page  */
 function goToSummary() {
