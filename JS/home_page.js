@@ -183,13 +183,22 @@ function autocomplete(inp, fullData, arr) {
 function showDetails(items) {
   const resultContainer = document.querySelector('.result-container'); // Select result container
   const resultContent = document.getElementById('result'); // Select the result content area
+  const sortButton = document.querySelector('.sort-container'); // Select the sort button container
   const template = document.getElementById('result-template'); // Access the template
 
   resultContent.innerHTML = ''; // Clear previous results
 
   if (items.length === 0) {    
-    // No results, hide the container
-    resultContainer.style.display = 'none';
+    // Display "No results found."
+    const noResultsMessage = document.createElement('p');
+    noResultsMessage.textContent = "Inga resultat hittades";
+    noResultsMessage.style.textAlign = "center";
+    noResultsMessage.style.color = "#888";
+    resultContent.appendChild(noResultsMessage);
+    // Hide the sort button
+    sortButton.style.display = 'none';
+    // Show the container even if there are no results
+    resultContainer.style.display = 'block';
   } else {
     // Show the container if there are results
     items.forEach(item => {
@@ -220,7 +229,8 @@ function showDetails(items) {
       // Add the detailDiv to the resultContent
       resultContent.appendChild(detailDiv);
     });
-
+    // Show the sort button
+    sortButton.style.display = 'flex';
     resultContainer.style.display = 'block'; // Ensure the container is visible
     resultContainer.scrollTop = 0;
     updateVisibilityClearAllButton(); 
