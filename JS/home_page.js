@@ -202,6 +202,15 @@ function autocomplete(inp, fullData, arr) {
     });
 }
 
+const categoryRanges = {
+  Protein: { min: 0, max: 8.7 }, // Proteinkällor
+  Kolhydrater: { min: 0, max: 1.2 }, // Kolhydratkällor
+  "Frukt och grönt": { min: 0, max: 1.5 }, // Grönsaker, frukt och bär
+  "Övriga vegetabiliska livsmedel": { min: 0, max: 6.5 }, // Fetter
+  Dryck: { min: 0, max: 1.8 }, // Dryck, inkl. mjölk
+  Mejeri: { min: 0, max: 4.6 }, // Mejeriprodukter, exkl. mjölk
+};
+
 /* hämta och visa information för sökta livsmedlet */
 function showDetails(items) {
   const resultContainer = document.querySelector('.result-container'); // Select result container
@@ -233,12 +242,19 @@ function showDetails(items) {
       detailDiv.querySelector('.food-raknebas').textContent = item.raknebas;
       detailDiv.querySelector('.food-carbon-output').textContent = item.carbonOutput;
 
-      // Position the black indicator based on CO2 output
+      const category = item.category;
       const carbonOutput = parseFloat(item.carbonOutput);
-      const position = Math.min(1.5, Math.max(0, carbonOutput)) / 1.5 * 100;
-      const indicator = detailDiv.querySelector('.scale-indicator');
-      indicator.style.left = `${position}%`;
+      const ranges = categoryRanges[category];
 
+      if (ranges) {
+        const position = Math.min(
+          100,
+          Math.max(0, ((carbonOutput - ranges.min) / (ranges.max - ranges.min)) * 100)
+        );
+
+        const indicator = detailDiv.querySelector('.scale-indicator');
+        indicator.style.left = `${position}%`;
+      }
       // Dynamically assign ID and onclick to the Add button
       const addButton = detailDiv.querySelector('.addButtons');
       addButton.id = `addButton${item.food}.${item.country}`;
