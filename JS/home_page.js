@@ -245,7 +245,7 @@ function addElementToList(id) {
   removeButton.onclick = function(){removeElementFromList(food)} // TODO: 
   foodItemDiv.appendChild(removeButton);
   foodItemDiv.appendChild(breakLine);
-  console.log(foodItemDiv.innerHTML);
+  // console.log(foodItemDiv.innerHTML);
 
   // Prevent from adding duplicates
   const foodItem = document.getElementById(food)
