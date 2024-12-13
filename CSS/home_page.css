@@ -85,7 +85,6 @@ h2 {
 }
 
 
-
 /* Filtermenyn */
 select{
   width: 100%; 
@@ -346,6 +345,12 @@ the class includes both the food item and its remove button.
 /* Add active effect */
 .removeButtons:active {
   background-color: #007004; /* Even darker green */
+}
+
+.nav-links a {
+  cursor: pointer; /* Change cursor to pointer */
+  text-decoration: none; /* Remove underline for a cleaner look */
+  color: inherit; /* Maintain the current text color */
 }
 
 /* --------------------------------------------------------------------*/
