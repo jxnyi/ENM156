@@ -68,13 +68,13 @@ h2 {
 /* Add hover effect */
 .sort-container button:hover {
   background-color:#3e8e41; /* Slightly darker green */
-  transform: scale(1.05); /* Slightly enlarge on hover */
+  transform: scale(1.02); /* Slightly enlarge on hover */
 }
 
 /* Add active effect */
 .sort-container button:active {
   background-color: #007004; /* Even darker green */
-  transform: scale(0.95); /* Slightly shrink on click */
+  transform: scale(0.98); /* Slightly shrink on click */
 }
 
 /* Optional: Disabled state */
@@ -254,35 +254,66 @@ body {
 /* Add hover effect */
 .addButtons:hover {
   background-color:#3e8e41; /* Slightly darker green */
-  transform: scale(1.05); /* Slightly enlarge on hover */
+  transform: scale(1.02); /* Slightly enlarge on hover */
 }
 
 /* Add active effect */
 .addButtons:active {
   background-color: #007004; /* Even darker green */
-  transform: scale(0.95); /* Slightly shrink on click */
+  transform: scale(0.98); /* Slightly shrink on click */
 }
 
 
+/* Added List Container (Updated) */
 .addedByUserListDiv {
-  position: absolute;
-  top: 60px; /* Assume the topbar is 10% of the viewport height */
-  bottom: 50px; /* Assume the footer is 7% of the viewport height */
-  right: 0;
+  position: fixed; /* Changed to fixed for smooth sliding */
+  top: 60px; /* Adjust based on your design */
+  bottom: 50px; /* Adjust based on your design */
+  right: -250px; /* Start hidden */
   width: 250px; /* Fixed width */
   padding: 10px;
   border: 1px solid #ccc;
   background-color: #f9f9f9;
   border-radius: 15px 0px 0px 15px;
-  overflow-y: auto; /* Enable scrolling for overflowing content */
+  overflow-y: auto;
   z-index: 999;
   box-sizing: border-box; /* Include padding/border in dimensions */
+  transition: right 0.3s ease; /* Smooth sliding effect */
 }
+
+/* Toggle Button */
+#toggleListButton {
+  position: fixed;
+  top: 60px; /* Match the list position */
+  right: 0;
+  width: 30px;
+  height: 50px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 5px 0 0 5px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure it stays above the list */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+/* Toggle Button Hover Effect */
+#toggleListButton:hover {
+  background-color: #3e8e41; /* Slightly darker green */
+}
+
 
 #clearUserList {
   position: sticky; /* Keeps the button pinned to the top */
   left: 0;
-  width: 100%; /* Full width of the container */
+  width: 50%; /* Full width of the container */
+  margin: 10px auto;
   height: 40px;
   background-color: #4CAF50;
   color: white;
@@ -293,7 +324,20 @@ body {
   border-radius: 5px;
   cursor: pointer;
   z-index: 1; /* Ensure it stays above the scrollable content */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
 }
+
+#clearUserList:hover {
+  background-color: #3e8e41; /* Slightly darker green on hover */
+  transform: scale(1.02); /* Slightly enlarge on hover */
+}
+
+#clearUserList:active {
+  background-color: #007004; /* Even darker green when clicked */
+  transform: scale(0.98); /* Slightly shrink on click */
+}
+
+
 
 /*Elements in the list of food items added by user: 
 the class includes both the food item and its remove button. 
@@ -340,11 +384,13 @@ the class includes both the food item and its remove button.
 /* Add hover effect */
 .removeButtons:hover {
   background-color:#3e8e41; /* Slightly darker green */
+  transform: scale(1.02); /* Slightly enlarge on hover */
 }
 
 /* Add active effect */
 .removeButtons:active {
   background-color: #007004; /* Even darker green */
+  transform: scale(0.98); /* Slightly shrink on click */
 }
 
 .nav-links a {
