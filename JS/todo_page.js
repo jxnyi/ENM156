@@ -1,4 +1,5 @@
 
+//create the TO-DO list
 function createList(listFromSummary) {
     var TODOlist = document.getElementById("TODO-list");
     console.log(listFromSummary);

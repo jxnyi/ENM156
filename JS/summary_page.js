@@ -61,8 +61,8 @@ function displayFilteredUserData() {
         countryCell.innerHTML = element.country;
         
         var carbonOutputCell = row.insertCell(2);
-        if (perKG) carbonOutputCell.innerHTML = element.carbonOutput + '/kg';
-        else carbonOutputCell.innerHTML = element.carbonOutput + '/L';
+        if (perKG) carbonOutputCell.innerHTML = element.carbonOutput;
+        else carbonOutputCell.innerHTML = element.carbonOutput;
         
         var inputCell = row.insertCell(3);
         let inputCellInput = document.createElement('input');
@@ -183,7 +183,6 @@ function updateDisplaySubstitution() {
     updateTotalCarbonOutput();
     makeListForTODO();
 }
-// userListSummary - remove old item, add new, grab new info from data, call displayFilteredUserData
 
 /* Gets the dropdown options for each food item in the summary list in ascending order */
 function getSubstitutionOptions(food, fullData) {
@@ -211,6 +210,7 @@ function getSubstitutionOptions(food, fullData) {
     return sortedOptions;
 }
 
+//remake list when page loaded and when substitution made
 function makeListForTODO() {
     //clear list first
     listForTODO.length = 0;
@@ -226,6 +226,7 @@ function makeListForTODO() {
     // console.log(listForTODO);
 }
 
+//update list every time amount is changed
 function updateListForTODO(foodName, foodCountry, foodAmount) {
     for (var item of listForTODO) {
         perKG = item.amount.includes("kg");
