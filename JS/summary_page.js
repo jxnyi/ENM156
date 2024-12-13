@@ -36,11 +36,9 @@ function fetchFoodData() {
                 )
             ); 
 
-            // console.log('Filtered Data: ', filteredUserData); 
             displayFilteredUserData(); 
             updateTotalCarbonOutput();
             makeListForTODO();
-            // substitutionDropdown(filteredUserData, data);
         })
         .catch(error => {
             console.error('Error on summary page', error); 
@@ -56,7 +54,6 @@ function displayFilteredUserData() {
  
     /*For each json row in json data*/
     filteredUserData.forEach((element,index) => {
-        //console.log(filteredUserData);
         updateUserListForHomepage(element.food, element.country);
 
         //check to add right units to table
@@ -99,7 +96,6 @@ function displayFilteredUserData() {
         const options = getSubstitutionOptions(element, fullData);
 
         for (let option of options) {
-            // console.log('gello')
             let substitutionCellOption = document.createElement('option'); 
             substitutionCellOption.setAttribute('id',index); // To be used within substitution function
             substitutionCellOption.textContent = option.food + ": " + option.carbonOutput + "kg CO₂e";
@@ -137,9 +133,6 @@ function updateTotalCarbonOutput() {
         const foodName = foodString.substring(0, i);
         const j = foodString.indexOf(';');
         const foodCountry = foodString.substring(i+1, j);
-
-        // console.log(foodString);
-        // console.log(foodName);
         
         let carbonOutput = Number.parseFloat(foodString.substring(j+1));
         let amount = parseFloat(inputField.value);
@@ -162,7 +155,6 @@ function goToHome() {
 
 fetchFoodData();
 
-//function updataDisplaySubstitution() {} TODO
 function updateDisplaySubstitution() {
     let sumTable = document.getElementById("summary-table"); 
 
@@ -179,12 +171,10 @@ function updateDisplaySubstitution() {
     // Entry that needs to be replaced 
     var toBeSubstituted = this.options[this.selectedIndex].id; 
     let foodIndexToSub = parseInt(toBeSubstituted); 
-    //alert(foodNameToSub+".."+foodCountryToSub+".."+foodIndexToSub);
+
     for(let i = 0; i < filteredUserData.length; i++){
         let indicesMatch = foodIndexToSub === i; 
-        //alert("I'm here");
         if(indicesMatch ){
-            //removefromUserListForHomepage(filteredUserData[i].food, filteredUserData[i].country);
             filteredUserData.splice(i,1,substitutionItems[0]);
         }
         
@@ -240,7 +230,6 @@ function makeListForTODO() {
             listForTODO.push({foodName: item.food, foodCountry: item.country, amount: 1 + unit});
         }
     }
-    // console.log(listForTODO);
 }
 
 //update list every time amount is changed

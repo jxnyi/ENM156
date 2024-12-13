@@ -26,10 +26,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     sessionStorage.setItem('userList', JSON.stringify(userList));
 
-  } //else {
-    savedList = JSON.parse(sessionStorage.getItem('userList')) || [];
-  // }
-  // const savedList = JSON.parse(sessionStorage.getItem('userList')) || [];
+  }
+  
+  savedList = JSON.parse(sessionStorage.getItem('userList')) || [];
   const parentListDiv = document.getElementById('addedListDiv');
 
   // Re-add items to the list on the homepage

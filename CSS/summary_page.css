@@ -3,67 +3,67 @@ body {
 }
 
 .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #007004;
-    color: white;
-    width: 100%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-sizing: border-box;
-  }
-  
-  .logo {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .nav-links a {
-    color: white;
-    text-decoration: none;
-    padding: 5px 10px;
-    font-size: 16px;
-    border-radius: 15px;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .nav-links a:hover {
-    background-color: white;
-    color: #4CAF50;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #007004;
+  color: white;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-sizing: border-box;
+}
 
-  html, body {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-  }
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
 
-  main {
-    flex: 1; /* Allow the main section to grow */
-    padding: 50px 0; /* Add spacing for aesthetics */
-    overflow-y: auto; /* Enable scrolling if needed */
-    box-sizing: border-box;
-  }
-  
-  .footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #007004;
-    color: white;
-    height: 50px; /* Fixed height in pixels */
-    width: 100%;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    position: fixed; /* Ensures it's always visible at the bottom */
-    bottom: 0;
-    z-index: 1000;
-    box-sizing: border-box;
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 15px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-links a:hover {
+  background-color: white;
+  color: #4CAF50;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1; /* Allow the main section to grow */
+  padding: 50px 0; /* Add spacing for aesthetics */
+  overflow-y: auto; /* Enable scrolling if needed */
+  box-sizing: border-box;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #007004;
+  color: white;
+  height: 50px; /* Fixed height in pixels */
+  width: 100%;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Ensures it's always visible at the bottom */
+  bottom: 0;
+  z-index: 1000;
+  box-sizing: border-box;
 }
 
 /* General Table Container Styling */
