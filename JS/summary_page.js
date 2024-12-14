@@ -76,21 +76,34 @@ function displayFilteredUserData() {
 
         // Amount Cell
         // Amount Cell (Mängd)
+// Amount Cell (Mängd)
 var inputCell = row.insertCell(3);
-let inputCellInput = document.createElement('input');
-inputCellInput.setAttribute('class', 'cellInputs');
-inputCellInput.type = 'number';
-inputCellInput.value = 1;
+
+// Create a container for the unit and input
+let inputContainer = document.createElement('div');
+inputContainer.classList.add('input-container'); // Add CSS class for styling
 
 // Determine unit (kg or l) based on element.raknebas
 let unit = element.raknebas.includes("kg") ? "kg" : "l";
 
-// Add input field and unit label
-inputCell.appendChild(document.createTextNode(`${unit}: `));
-inputCell.appendChild(inputCellInput);
+// Create and add the label (unit)
+let unitLabel = document.createElement('span');
+unitLabel.textContent = `${unit}:`;
 
-// Update total emissions when the input changes
-inputCellInput.addEventListener('input', () => updateTotalCarbonOutput());
+// Create and add the input field
+let inputCellInput = document.createElement('input');
+inputCellInput.setAttribute('class', 'cellInputs');
+inputCellInput.type = 'number';
+inputCellInput.value = 1;
+inputCellInput.addEventListener('input', () => updateTotalCarbonOutput()); // Update total emissions
+
+// Append label and input to the container
+inputContainer.appendChild(unitLabel);
+inputContainer.appendChild(inputCellInput);
+
+// Append the container to the cell
+inputCell.appendChild(inputContainer);
+
 
 
         // Substitution Cell with Dropdown
