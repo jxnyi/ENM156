@@ -213,9 +213,27 @@ body {
   margin-bottom: 10px;   
 }
 
+.carbon-output-container {
+  display: flex;
+  flex-direction: column; /* Arrange items vertically */
+  align-items: flex-start; /* Align items to the left */
+  text-align: left; /* Ensure text aligns to the left */
+  margin-top: 10px; /* Add spacing above the container if needed */
+  gap: 10px; /* Space between the text and the scale */
+}
+
+.carbon-output-container p {
+  margin: 0; /* Remove any default margin */
+  font-size: 16px; /* Adjust the text size as needed */
+  font-weight: bold; /* Ensure the font matches the rest of the design */
+  margin-left: -40px; /* Apply the offset to the text only */
+}
+
 .scale-container {
   width: 150px;
   height: 20px; /* Adjust height to fit the text above the scale */
+  top: 0;
+  left: -40px;
   background: linear-gradient(to right, green, yellow, orange, red);
   border-radius: 1px;
   position: relative;
@@ -237,8 +255,8 @@ body {
 .addButtons{
   height:30px; 
   width:30px; 
-  top: -25px;
-  left: 170px;
+  top: -35px;
+  left: 120px;
   position:relative;
   border-radius: 50%;
   border: none;
