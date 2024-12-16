@@ -143,13 +143,3 @@ main {
   text-decoration: none; /* Remove underline for a cleaner look */
   color: inherit; /* Maintain the current text color */
 }
-
-.input-container {
-  display: flex;
-  align-items: center; /* Align label and input vertically */
-  gap: 4px; /* Add spacing between the label and the input field */
-}
-
-.cellInputs {
-  width: 50px; /* Optional: Set a fixed width for the input field */
-}

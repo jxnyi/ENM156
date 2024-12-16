@@ -15,14 +15,6 @@ window.onload = (_ => {
     }
 });
 
-
-function updateDropdownDefaultTextForRow(dropdown, foodName) {
-    // Update the "Ersätt med..." text in the dropdown to match the selected ingredient
-    if (dropdown && dropdown.options.length > 0) {
-        dropdown.options[0].textContent = foodName; // Replace the first option text
-    }
-}
-
 function updateUserListForHomepage(foodName, foodCountry){
     listForHomePage.push('summary!!' + foodName + '.' + foodCountry);
 }
@@ -58,99 +50,67 @@ function fetchFoodData() {
 // Totala Utsläpp : - kg CO2e/kg (adjust vid ändringar)
 function displayFilteredUserData() {
     const summaryTable = document.getElementById('summary-table');
+    var perKG = false;
+ 
+    /*For each json row in json data*/
+    filteredUserData.forEach((element,index) => {
+        updateUserListForHomepage(element.food, element.country);
 
-    filteredUserData.forEach((element, index) => {
+        //check to add right units to table
+        perKG = element.raknebas.includes("kg");
+
         var row = summaryTable.insertRow();
 
-        // Food Name Cell (Ingrediens)
         var foodCell = row.insertCell(0);
         foodCell.innerHTML = element.food;
-
-        // Country Cell
+        
         var countryCell = row.insertCell(1);
         countryCell.innerHTML = element.country;
-
-        // Carbon Output Cell (Koldioxidutsläpp)
+        
         var carbonOutputCell = row.insertCell(2);
-        carbonOutputCell.innerHTML = `${element.carbonOutput} kg CO₂e`;
+        if (perKG) carbonOutputCell.innerHTML = element.carbonOutput + "/kg";
+        else carbonOutputCell.innerHTML = element.carbonOutput + "/l";
+        
+        var inputCell = row.insertCell(3);
+        let inputCellInput = document.createElement('input');
+        inputCellInput.setAttribute('class', 'cellInputs');
+        inputCellInput.setAttribute('id', element.food + "!" + element.country + ";" + element.carbonOutput);
+        inputCellInput.type = 'number';
+        inputCellInput.value = 1
 
-        // Amount Cell
-        // Amount Cell (Mängd)
-// Amount Cell (Mängd)
-var inputCell = row.insertCell(3);
+        if (perKG) inputCell.innerHTML = 'kg: ';
+        else inputCell.innerHTML = 'l: ';
+        
+        inputCellInput.addEventListener('input', () => updateTotalCarbonOutput()); 
+        inputCell.appendChild(inputCellInput);
 
-// Create a container for the unit and input
-let inputContainer = document.createElement('div');
-inputContainer.classList.add('input-container'); // Add CSS class for styling
-
-// Determine unit (kg or l) based on element.raknebas
-let unit = element.raknebas.includes("kg") ? "kg" : "l";
-
-// Create and add the label (unit)
-let unitLabel = document.createElement('span');
-unitLabel.textContent = `${unit}:`;
-
-// Create and add the input field
-let inputCellInput = document.createElement('input');
-inputCellInput.setAttribute('class', 'cellInputs');
-inputCellInput.type = 'number';
-inputCellInput.value = 1;
-inputCellInput.addEventListener('input', () => updateTotalCarbonOutput()); // Update total emissions
-
-// Append label and input to the container
-inputContainer.appendChild(unitLabel);
-inputContainer.appendChild(inputCellInput);
-
-// Append the container to the cell
-inputCell.appendChild(inputContainer);
-
-
-
-        // Substitution Cell with Dropdown
         var substitutionCell = row.insertCell(4);
         let substitutionCellContent = document.createElement('select');
-        substitutionCellContent.setAttribute('class', "selectSubstitutionClass");
+        substitutionCellContent.setAttribute('class',"selectSubstitutionClass");
+        substitutionCellContent.setAttribute('id',"selectSubstitution");
 
-        // Default Option
-        let substitutionDefaultOption = document.createElement('option');
-        substitutionDefaultOption.textContent = "Ersätt med...";
-        substitutionCellContent.appendChild(substitutionDefaultOption);
-
-        // Populate Options
+        let substitutionDefualtOption = document.createElement('option');
+        substitutionDefualtOption.textContent = "Ersätt med...";
+        substitutionCellContent.appendChild(substitutionDefualtOption);
+        
         const options = getSubstitutionOptions(element, fullData);
-        options.forEach(option => {
-            let substitutionCellOption = document.createElement('option');
-            substitutionCellOption.textContent = `${option.food}: ${option.carbonOutput} kg CO₂e`;
-            substitutionCellOption.value = `${option.food}.${option.country}`;
-            substitutionCellContent.appendChild(substitutionCellOption);
-        });
 
-        // Event Listener for Dropdown
-        substitutionCellContent.addEventListener('input', function () {
-            const selectedOptionText = this.options[this.selectedIndex].textContent; // Get selected option text
-            const foodName = selectedOptionText.split(':')[0]; // Extract food name (before colon)
-            const selectedCarbonOutput = selectedOptionText.split(':')[1]?.trim().split(' ')[0]; // Extract carbonOutput
-
-            // Update Ingrediens column dynamically
-            foodCell.innerHTML = foodName;
-
-            // Update Koldioxidutsläpp dynamically
-            carbonOutputCell.innerHTML = `${selectedCarbonOutput} kg CO₂e`;
-            carbonOutputCell.setAttribute('data-carbon-output', selectedCarbonOutput); // Update stored value
-
-            // Update the dropdown default text dynamically
-            updateDropdownDefaultTextForRow(this, foodName);
-
-            // Update the total emissions dynamically
-            updateTotalCarbonOutput();
-        });
-
+        for (let option of options) {
+            let substitutionCellOption = document.createElement('option'); 
+            substitutionCellOption.setAttribute('id',index); // To be used within substitution function
+            substitutionCellOption.textContent = option.food + ": " + option.carbonOutput + "kg CO₂e";
+            substitutionCellOption.value = option.food +"."+option.country;// To be used within substitution function
+            substitutionCellContent.appendChild(substitutionCellOption); 
+        }
+        substitutionCellContent.addEventListener('input',updateDisplaySubstitution); 
         substitutionCell.appendChild(substitutionCellContent);
-    });
+        
 
-    // Add Table Header
-    const tableHeader = summaryTable.insertRow(0);
-    tableHeader.innerHTML = `
+        
+        
+     });
+     var tableHeader = summaryTable.insertRow(0);
+     tableHeader.innerHTML = `
         <th>Ingrediens</th>
         <th>Land</th>
         <th>Koldioxidutsläpp</th>
@@ -159,24 +119,32 @@ inputCell.appendChild(inputContainer);
     `;
 }
 
-
 function updateTotalCarbonOutput() {
-    const tableCarbonSum = document.getElementById('carbon-sum'); // Total emissions display element
-    const cellInputs = document.getElementsByClassName('cellInputs'); // Input cells for quantity
+    //called once in beginning and every time inputCell changed
+    //add all carbonOutputCell #s together
+
+    const tableCarbonSum = document.getElementById('carbon-sum');
+    const cellInputs = document.getElementsByClassName('cellInputs');
     let totalCarbonOutput = 0;
 
-    for (let inputField of cellInputs) {
-        const row = inputField.closest('tr'); // Get the corresponding table row
-        const carbonOutputCell = row.cells[2]; // Get the Koldioxidutsläpp cell
-        const carbonOutput = parseFloat(carbonOutputCell.textContent) || 0; // Extract carbon output
-        const amount = parseFloat(inputField.value) || 0; // Get the input value
+    for (let inputField of cellInputs) {  
+        const foodString = inputField.getAttribute('id');
+        const i = foodString.indexOf('!');
+        const foodName = foodString.substring(0, i);
+        const j = foodString.indexOf(';');
+        const foodCountry = foodString.substring(i+1, j);
+        
+        let carbonOutput = Number.parseFloat(foodString.substring(j+1));
+        let amount = parseFloat(inputField.value);
 
-        totalCarbonOutput += amount * carbonOutput; // Add to total
+        if (amount === 0) carbonOutput = -1 * carbonOutput; //for subtraction
+        totalCarbonOutput += amount * carbonOutput;
+
+        updateListForTODO(foodName, foodCountry, amount);
     }
 
-    tableCarbonSum.textContent = totalCarbonOutput.toFixed(1); // Update total emissions display
+    tableCarbonSum.textContent = totalCarbonOutput.toFixed(1);
 }
-
 
 function goToHome() {
     sessionStorage.setItem('listFromSummary', JSON.stringify(listForHomePage));
