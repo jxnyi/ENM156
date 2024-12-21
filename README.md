@@ -14,5 +14,5 @@ Utforska dessa resurser:
 
 
 ---
-Tack för att du besöker SustainaBite! Låt oss skapa en hållbar framtid tillsammans.
+Tack för att du besöker TerraBite! Låt oss skapa en hållbar framtid tillsammans.
 
